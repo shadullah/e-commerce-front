@@ -43,11 +43,16 @@ const FeaturedProducts = () => {
     fetchProducts();
   }, []);
 
+  const truncate = (str: string, len: number) => {
+    if (str.length <= len) return str;
+    return str.slice(0, len) + "...";
+  };
+
   return (
     <div className="py-12 bg-gray-900">
       <div>
         <div className="text-center">
-          <h2 className="text-base text-teal-600 font-semibold tracking-wide uppercase">
+          <h2 className="text-base text-pink-600 font-semibold tracking-wide uppercase">
             Featured Products
           </h2>
           <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
@@ -79,7 +84,7 @@ const FeaturedProducts = () => {
                   {products?.map((product: Product) => (
                     <div className="flex justify-center" key={product?._id}>
                       <BackgroundGradient className="flex flex-col rounded-[22px] bg-white dark:bg-zinc-900 overflow-hidden h-full max-w-sm">
-                        <div className="p-4 sm:p-6 flex flex-col items-center text-center flex-grow">
+                        <div className="p-6">
                           <Image
                             src={product.productImage}
                             alt="productImage"
@@ -87,16 +92,18 @@ const FeaturedProducts = () => {
                             width="400"
                             className="object-contain rounded-2xl mb-2"
                           />
-                          <p className="text-3xl font-bold">{product.name}</p>
-
-                          {/* <p className="text-justify my-2">{product.description}</p> */}
-                          <p className="my-3">৳ {product.price}</p>
-                          <Link
-                            href={`/products/${product._id}`}
-                            className="bg-slate-700 w-full py-2 rounded-2xl text-sm"
-                          >
-                            Details
-                          </Link>
+                          <p className="text-xl font-bold text-center mb-2">
+                            {truncate(product.name, 12)}
+                          </p>
+                          <div className="flex justify-between items-center space-x-4">
+                            <p className="my-3">৳ {product.price}</p>
+                            <Link
+                              href={`/products/${product._id}`}
+                              className="bg-slate-700 px-3 py-2 rounded-2xl text-sm"
+                            >
+                              <button>Details</button>
+                            </Link>
+                          </div>
                         </div>
                       </BackgroundGradient>
                     </div>

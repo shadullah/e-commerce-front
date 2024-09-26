@@ -10,6 +10,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  // const [msg, setMsg] = useState("")
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -41,9 +42,12 @@ const Register = () => {
         setSuccess(
           "Registration successful! Please check your email to verify your account."
         );
-        e.currentTarget.reset(); // Clear the form after successful submission
+        if (e.currentTarget) {
+          e.currentTarget.reset();
+        }
       }
     } catch (err: any) {
+      console.log(err);
       if (err.response && err.response.data && err.response.data.message) {
         setError(err.response.data.message);
       } else {

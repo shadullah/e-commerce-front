@@ -14,7 +14,7 @@ interface Product {
   price: number;
   discount: number;
   stock: boolean;
-  viewed: boolean;
+  top_sold: boolean;
 }
 
 interface ApiResponse {
@@ -23,7 +23,7 @@ interface ApiResponse {
   message: string;
 }
 
-const Viewed = () => {
+const Sold = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -50,12 +50,12 @@ const Viewed = () => {
   };
 
   return (
-    <div className="mt-6 ">
+    <div className="py-6 bg-gray-900 my-4">
       <div>
         <div className="flex justify-between items-center px-12">
           <p className=" text-xl leading-8 font-bold tracking-tight text-white sm:text-2xl">
             {" "}
-            Most viewed
+            Best Selling
           </p>
           <button className="text-lg">See More &rarr;</button>
         </div>
@@ -81,7 +81,7 @@ const Viewed = () => {
               <>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8 justify-center m-12">
                   {products
-                    ?.filter((product: Product) => product?.viewed === true)
+                    ?.filter((product: Product) => product?.top_sold === true)
                     .map((product: Product) => (
                       <div className="flex justify-center" key={product?._id}>
                         <BackgroundGradient className="flex flex-col rounded-[22px] bg-white dark:bg-zinc-900 overflow-hidden h-full max-w-sm">
@@ -119,4 +119,4 @@ const Viewed = () => {
   );
 };
 
-export default Viewed;
+export default Sold;

@@ -6,6 +6,10 @@ import withAutoplay from "react-awesome-slider/dist/autoplay";
 import img1 from "../../public/zerocal.webp";
 import img2 from "../../public/ads.webp";
 
+const myLoader = ({ src }: { src: string }) => {
+  return src;
+};
+
 const Banner = () => {
   const AutoplaySlider = withAutoplay(AwesomeSlider);
 
@@ -18,14 +22,14 @@ const Banner = () => {
         className="slider h-96 "
       >
         <div className="">
-          <Image src={img1} alt="1" />
+          <Image loader={myLoader} src={img1} alt="1" />
         </div>
 
         {/* 2nd slide */}
 
         <div className="slider_content flex flex-col-reverse md:flex-row justify-between items-center mx-6 md:mx-0">
           <div className="py-16 md:py-0">
-            <Image src={img2} alt="1"></Image>
+            <Image loader={myLoader} src={img2} alt="1"></Image>
           </div>
         </div>
       </AutoplaySlider>

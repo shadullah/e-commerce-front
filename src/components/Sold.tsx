@@ -6,6 +6,10 @@ import Link from "next/link";
 import { Audio } from "react-loader-spinner";
 import { BackgroundGradient } from "./ui/background-gradient";
 
+const myLoader = ({ src }: { src: string }) => {
+  return src;
+};
+
 interface Product {
   _id: string;
   productImage: string;
@@ -87,6 +91,7 @@ const Sold = () => {
                         <BackgroundGradient className="flex flex-col rounded-[22px] bg-white dark:bg-zinc-900 overflow-hidden h-full max-w-sm">
                           <div className="p-6">
                             <Image
+                              loader={myLoader}
                               src={product.productImage}
                               alt="productImage"
                               height="400"

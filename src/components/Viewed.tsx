@@ -23,6 +23,10 @@ interface ApiResponse {
   message: string;
 }
 
+const myLoader = ({ src }: { src: string }) => {
+  return src;
+};
+
 const Viewed = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -87,6 +91,7 @@ const Viewed = () => {
                         <BackgroundGradient className="flex flex-col rounded-[22px] bg-white dark:bg-zinc-900 overflow-hidden h-full max-w-sm">
                           <div className="p-6">
                             <Image
+                              loader={myLoader}
                               src={product.productImage}
                               alt="productImage"
                               height="400"

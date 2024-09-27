@@ -3,6 +3,10 @@ import axios from "axios";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
+const myLoader = ({ src }: { src: string }) => {
+  return src;
+};
+
 type Category = {
   id: string;
   name: string;
@@ -47,6 +51,7 @@ const Categories = () => {
                     <h3 className="text-2xl font-bold">{cat.name}</h3>
                     <div>
                       <Image
+                        loader={myLoader}
                         src={cat?.thumbnail}
                         alt="category"
                         height={300}

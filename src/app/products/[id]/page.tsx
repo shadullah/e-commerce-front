@@ -5,6 +5,10 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Audio } from "react-loader-spinner";
 
+const myLoader = ({ src }: { src: string }) => {
+  return src;
+};
+
 interface Product {
   _id: string;
   productImage: string;
@@ -132,6 +136,7 @@ const ProductDetails = ({ params }: any) => {
               <div className="w-full md:w-1/2 p-2 md:p-6">
                 {product?.productImage && (
                   <Image
+                    loader={myLoader}
                     src={product.productImage}
                     alt="img"
                     height={600}
@@ -149,6 +154,7 @@ const ProductDetails = ({ params }: any) => {
                 <div className="flex items-center space-x-2 mt-3">
                   {cat?.thumbnail && (
                     <Image
+                      loader={myLoader}
                       src={cat?.thumbnail}
                       alt="img"
                       height={200}

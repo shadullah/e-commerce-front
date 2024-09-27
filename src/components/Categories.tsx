@@ -19,7 +19,7 @@ const Categories = () => {
         const res = await axios.get(
           "http://localhost:8000/api/v1/category/all"
         );
-        console.log(res.data);
+        // console.log(res.data);
         setCates(res?.data?.data);
       } catch (error) {
         console.log(error);
@@ -41,8 +41,8 @@ const Categories = () => {
         ) : (
           <>
             <div className="grid grid-cols-3 gap-12 mx-auto mt-3 p-6">
-              {cates.map((cat) => (
-                <div key={cat?.id}>
+              {cates.map((cat, index) => (
+                <div key={cat?.id || index}>
                   <div className="bg-pink-100 text-gray-800 flex items-center justify-between p-6 rounded-lg">
                     <h3 className="text-2xl font-bold">{cat.name}</h3>
                     <div>

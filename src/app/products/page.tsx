@@ -5,6 +5,8 @@ import { BackgroundGradient } from "../../components/ui/background-gradient";
 import Image from "next/image";
 import Link from "next/link";
 import { Audio } from "react-loader-spinner";
+import { usePathname, useRouter } from "next/navigation";
+import { BiSearchAlt2 } from "react-icons/bi";
 
 interface Product {
   _id: string;
@@ -25,28 +27,39 @@ interface ApiResponse {
 const FeaturedProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [searchQ, setSearchQ] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get<ApiResponse>(
-          "http://localhost:8000/api/v1/products/list"
-        );
+        const url = searchQ
+          ? `http://localhost:8000/api/v1/products?search=${searchQ}`
+          : `http://localhost:8000/api/v1/products`;
+        const res = await axios.get<ApiResponse>(url);
         console.log(res?.data);
-        setProducts(res?.data?.data);
+        setProducts(res?.data?.data || []);
       } catch (err) {
         console.log(err);
+        setProducts([]);
       } finally {
         setLoading(false);
       }
     };
     fetchProducts();
-  }, []);
+  }, [searchQ]);
 
   const truncate = (str: string, len: number) => {
     if (str.length <= len) return str;
     return str.slice(0, len) + "...";
   };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+  };
+  const pathname = usePathname();
+
+  const urlCheck = pathname === "/";
 
   return (
     <div className="py-12 bg-gray-900">
@@ -61,6 +74,36 @@ const FeaturedProducts = () => {
           </p>
         </div>
       </div>
+
+      {urlCheck ? (
+        <></>
+      ) : (
+        <>
+          <div className="flex justify-between items-center px-24">
+            <div>
+              <span className="text-3xl text-center">Products</span>
+            </div>
+            <div>
+              <form onSubmit={handleSearch} className="">
+                <div className="flex items-center px-6 py-3 rounded-lg mt-6">
+                  <input
+                    type="text"
+                    className="bg-gray-800 border-b-2 p-[2.5px] outline-none w-full"
+                    placeholder="Search Here..."
+                    name="search"
+                    onChange={(e) => setSearchQ(e.target.value)}
+                    value={searchQ}
+                  />
+                  <button type="submit" className="">
+                    <BiSearchAlt2 className="text-3xl border-b-2 p-1 " />
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </>
+      )}
+
       <div className="mt-10">
         {loading ? (
           <div className="flex justify-center">
@@ -74,7 +117,7 @@ const FeaturedProducts = () => {
           </div>
         ) : (
           <>
-            {products?.length === 0 ? (
+            {searchQ && products?.length === 0 ? (
               <div className="text-3xl bg-red-600 text-center py-2 my-24 w-full md:w-1/2 mx-auto rounded-lg">
                 <p>No Products Found or server error</p>
               </div>

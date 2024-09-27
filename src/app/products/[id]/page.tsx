@@ -40,11 +40,10 @@ const ProductDetails = ({ params }: any) => {
     const fetchDetails = async () => {
       try {
         const res = await axios.get<ApiResponse>(
-          `http://localhost:8000/api/v1/products/list/${id}`
+          `http://localhost:8000/api/v1/products/${id}`
         );
         console.log(res.data);
         setProduct(res.data?.data);
-
       } catch (err) {
         console.log(err);
         toast.error("Details could not fetched", { duration: 3000 });

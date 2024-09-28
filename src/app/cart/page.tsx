@@ -1,10 +1,13 @@
 "use client";
+import { addToCart } from "@/store/Reducers/cartSlice";
+import { useAppSelector } from "@/store/store";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { IoMdClose } from "react-icons/io";
+import { useDispatch } from "react-redux";
 
 const myLoader = ({ src }: { src: string }) => {
   return src;
@@ -69,6 +72,13 @@ const Cart = () => {
     fetchCart();
   }, []);
 
+  const Subtotal = useMemo(() => {
+    return cartItems.reduce(
+      (ttl, Item) => ttl + Item.productId.price * Item.quantity,
+      0
+    );
+  }, [cartItems]);
+
   const handlePlus = (id: string) => {
     setCartItems((prevItems) =>
       prevItems.map((item) =>
@@ -87,6 +97,62 @@ const Cart = () => {
     );
   };
 
+  const ttl = Subtotal;
+
+  const handleCartUpdate = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        toast.error("user not authenticated");
+        return;
+      }
+      // {{server}}/carts/66be0c2639a62d3bf11ff0f1
+      await cartItems.map((item) => {
+        axios.patch(
+          `http://localhost:8000/api/v1/carts/${item._id}`,
+          {
+            quantity: item?.quantity,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+      });
+      router.push("/order");
+      toast.success("Cart updated success");
+    } catch (err) {
+      console.log(err);
+      toast.error("error in update", { duration: 3000 });
+    }
+  };
+
+  const handleDelete = async (itemId: string) => {
+    try {
+      axios.delete(
+        `http://localhost:8000/api/v1/carts/user/${itemId}`,
+
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          data: {
+            customerId: cartItems?.find((item) => item?._id === itemId)
+              ?.customer,
+          },
+        }
+      );
+      setCartItems((prevItems) =>
+        prevItems.filter((item) => item._id !== itemId)
+      );
+      toast.success("deleted successfully!!");
+    } catch (error) {
+      toast.error("Couldn't Delete the item");
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <div className="main flex justify-between mx-12">
@@ -98,7 +164,7 @@ const Cart = () => {
                 {cartItems.map((item) => (
                   <div
                     key={item?._id}
-                    className="grid grid-cols-4 items-center gap-6 bg-gray-800 p-3 rounded-md"
+                    className="grid grid-cols-4 items-center gap-6 bg-gray-800 p-3 m-3 rounded-md"
                   >
                     <div className="flex justify-center items-center">
                       <Image
@@ -134,7 +200,7 @@ const Cart = () => {
                     <div>
                       <button
                         className="bg-gray-400 p-3 rounded-full"
-                        // onClick={() => removeItem(item.id)}
+                        onClick={() => handleDelete(item._id)}
                       >
                         <IoMdClose />
                       </button>
@@ -154,7 +220,7 @@ const Cart = () => {
           <div className="p-3 bg-gray-300 rounded-md space-y-2 text-gray-600">
             <div className="text-sm flex justify-between">
               <p>Subtotal: </p>
-              {/* <p>${Subtotal.toFixed(2)}</p> */}
+              <p>${Subtotal.toFixed(2)}</p>
             </div>
             <div className="text-sm flex justify-between">
               <p className="">Shipping: </p>
@@ -165,7 +231,7 @@ const Cart = () => {
             <div className="text-lg font-medium flex justify-between">
               <p className="">Total:</p>
 
-              {/* <p>${total.toFixed(2)}</p> */}
+              <p>${ttl.toFixed(2)}</p>
             </div>
           </div>
           <div>

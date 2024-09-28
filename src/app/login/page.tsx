@@ -8,7 +8,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
-import { login } from "@/store/authSlice";
+import { login } from "@/store/Reducers/authSlice";
 // import { useRouter } from "next/";
 
 const Login = () => {
@@ -16,7 +16,7 @@ const Login = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(null);
   const router = useRouter();
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,12 +42,12 @@ const Login = () => {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
 
-      dispatch(
-        login({
-          email: formData.get("email") as string,
-          password: formData.get("password") as string,
-        })
-      );
+      // dispatch(
+      //   login({
+      //     email: formData.get("email") as string,
+      //     password: formData.get("password") as string,
+      //   })
+      // );
 
       router.push("/");
     } catch (error: any) {

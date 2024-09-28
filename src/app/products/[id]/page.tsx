@@ -1,9 +1,12 @@
 "use client";
+import useCarts from "@/hooks/useCarts";
+import { addToCart } from "@/store/Reducers/cartSlice";
 import axios from "axios";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Audio } from "react-loader-spinner";
+import { useDispatch } from "react-redux";
 
 const myLoader = ({ src }: { src: string }) => {
   return src;
@@ -38,7 +41,8 @@ const ProductDetails = ({ params }: any) => {
   const [product, setProduct] = useState<Product | null>(null);
   const [cat, setCat] = useState<Category | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isInCart, setIsInCart] = useState(false);
+  const dispatch = useDispatch();
+  const [carts] = useCarts();
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -58,9 +62,14 @@ const ProductDetails = ({ params }: any) => {
     fetchDetails();
   }, [id]);
 
+  console.log(product?._id);
+
+  const existingCartItem = carts.map((cart) => cart.productId);
+  console.log(JSON.stringify(existingCartItem));
+
   const cursorControl = product?.stock;
-  const discount = product?.discount ?? 0;
-  const originalPrice = product?.price ?? 0 / (1 - discount / 100);
+  const discount = product ? product?.discount : 0;
+  const originalPrice = product ? product.price / (1 - discount / 100) : 0;
 
   useEffect(() => {
     const getCategory = async () => {
@@ -94,6 +103,8 @@ const ProductDetails = ({ params }: any) => {
         toast.error("Failed to fetch userId");
         return;
       }
+      console.log(carts);
+      console.log(product._id);
 
       await axios.post(
         "http://localhost:8000/api/v1/carts/create",
@@ -108,6 +119,15 @@ const ProductDetails = ({ params }: any) => {
           },
         }
       );
+
+      dispatch(
+        addToCart({
+          productId: product._id,
+          quantity: 1,
+          customer: userId,
+        })
+      );
+
       toast.success("Product added to cart!");
     } catch (error) {
       toast.error("Failed to add product to cart");
@@ -157,8 +177,8 @@ const ProductDetails = ({ params }: any) => {
                       loader={myLoader}
                       src={cat?.thumbnail}
                       alt="img"
-                      height={200}
-                      width={200}
+                      height={50}
+                      width={50}
                     />
                   )}
                   <p className="text-sm">Category: {cat?.name}</p>

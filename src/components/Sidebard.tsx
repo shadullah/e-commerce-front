@@ -12,9 +12,6 @@ import { cn } from "@/utils/cn";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
 import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
-import { logout } from "@/store/authSlice";
-import { useAppSelector } from "@/store/store";
 
 const myLoader = ({ src }: { src: string }) => {
   return src;
@@ -24,9 +21,6 @@ export function Sidebard() {
   const router = useRouter();
   const pathname = usePathname();
   const [isLoggedIn, setIsLoggedin] = useState(false);
-  const dispatch = useDispatch();
-
-  const userEmail = useAppSelector((state) => state.auth.userData?.email);
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -48,7 +42,6 @@ export function Sidebard() {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
 
-      dispatch(logout());
       setIsLoggedin(false);
 
       router.push("/login");
@@ -141,12 +134,12 @@ export function Sidebard() {
           <div>
             <SidebarLink
               link={{
-                label: userEmail ? userEmail : "Guest",
+                label: "Manu Arora",
                 href: "#",
                 icon: (
                   <Image
                     loader={myLoader}
-                    src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small_2x/user-profile-icon-free-vector.jpg"
+                    src="https://assets.aceternity.com/manu.png"
                     className="h-7 w-7 flex-shrink-0 rounded-full"
                     width={50}
                     height={50}

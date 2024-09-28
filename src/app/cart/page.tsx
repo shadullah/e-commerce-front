@@ -120,7 +120,7 @@ const Cart = () => {
           }
         );
       });
-      router.push("/order");
+      router.push(`/order?ttl=${ttl}`);
       toast.success("Cart updated success");
     } catch (err) {
       console.log(err);
@@ -235,7 +235,10 @@ const Cart = () => {
             </div>
           </div>
           <div>
-            <button className="bg-gray-800 w-full text-gray-100 py-2 rounded-md my-3">
+            <button
+              onClick={handleCartUpdate}
+              className="bg-gray-800 w-full text-gray-100 py-2 rounded-md my-3"
+            >
               GO TO CHECKOUT &rarr;
             </button>
           </div>

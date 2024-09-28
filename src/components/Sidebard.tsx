@@ -12,6 +12,7 @@ import { cn } from "@/utils/cn";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
 import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { MdOutlineSpaceDashboard } from "react-icons/md";
 
 const myLoader = ({ src }: { src: string }) => {
   return src;
@@ -117,6 +118,20 @@ export function Sidebard() {
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
               ))}
+
+              {isLoggedIn ? (
+                <>
+                  <Link
+                    href="/dashboard"
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <MdOutlineSpaceDashboard className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+                    <span className="text-neutral-700 dark:text-neutral-200">
+                      Dashboard
+                    </span>
+                  </Link>
+                </>
+              ) : null}
 
               <div
                 onClick={

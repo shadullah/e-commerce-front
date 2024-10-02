@@ -161,6 +161,7 @@ const ProductDetails = ({ params }: any) => {
                     alt="img"
                     height={600}
                     width={600}
+                    unoptimized
                     className="object-contain rounded-2xl "
                     priority
                   />
@@ -177,6 +178,7 @@ const ProductDetails = ({ params }: any) => {
                       loader={myLoader}
                       src={cat?.thumbnail}
                       alt="img"
+                      unoptimized
                       height={50}
                       width={50}
                     />

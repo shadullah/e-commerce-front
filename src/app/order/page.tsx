@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense } from "react";
 
 const OrderPage = () => {
   const router = useRouter();
@@ -53,4 +53,10 @@ const OrderPage = () => {
   );
 };
 
-export default OrderPage;
+const OrderPageWrapper = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <OrderPage />
+  </Suspense>
+);
+
+export default OrderPageWrapper;

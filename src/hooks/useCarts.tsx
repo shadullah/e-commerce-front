@@ -4,11 +4,12 @@ import React, { useEffect, useState } from "react";
 
 const useCarts = () => {
   const [carts, setCarts] = useState<any[]>([]);
-  const userId = localStorage.getItem("id");
 
   useEffect(() => {
     const getCartInfo = async () => {
       try {
+        const userId = localStorage.getItem("id");
+
         const res = await axios.get(
           `http://localhost:8000/api/v1/carts/user/${userId}`
         );
@@ -19,7 +20,7 @@ const useCarts = () => {
       }
     };
     getCartInfo();
-  }, [userId]);
+  }, []);
   return [carts];
 };
 

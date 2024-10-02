@@ -2,7 +2,7 @@
 const nextConfig = {
   images: {
     loader: "custom",
-    domains: [],
+    domains: ["https://assets.aceternity.com/", "http://res.cloudinary.com/"],
   },
 };
 

@@ -56,6 +56,7 @@ const Categories = () => {
                         alt="category"
                         height={300}
                         width={300}
+                        unoptimized
                         className="h-12 w-12 mx-auto rounded-md"
                       />
                     </div>

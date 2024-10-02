@@ -20,7 +20,7 @@ interface Product {
 
 interface ApiResponse {
   statusCode: number;
-  data: Product[];
+  data: { totalProducts: number; products: Product[] };
   message: string;
 }
 
@@ -32,16 +32,20 @@ const FeaturedProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchQ, setSearchQ] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const url = searchQ
           ? `http://localhost:8000/api/v1/products?search=${searchQ}`
-          : `http://localhost:8000/api/v1/products`;
+          : `http://localhost:8000/api/v1/products?page=${currentPage}`;
         const res = await axios.get<ApiResponse>(url);
-        console.log(res?.data);
-        setProducts(res?.data?.data || []);
+        console.log(res?.data.data);
+        const fetchedProducts = res.data.data.products || [];
+        setTotalPages(Math.ceil(res.data.data.totalProducts / 10));
+        setProducts(fetchedProducts);
       } catch (err) {
         console.log(err);
         setProducts([]);
@@ -50,7 +54,7 @@ const FeaturedProducts = () => {
       }
     };
     fetchProducts();
-  }, [searchQ]);
+  }, [searchQ, currentPage]);
 
   const truncate = (str: string, len: number) => {
     if (str.length <= len) return str;
@@ -59,6 +63,7 @@ const FeaturedProducts = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    setCurrentPage(1);
     setLoading(true);
   };
   const pathname = usePathname();
@@ -83,10 +88,7 @@ const FeaturedProducts = () => {
         <></>
       ) : (
         <>
-          <div className="flex justify-between items-center px-24">
-            <div>
-              <span className="text-3xl text-center">Products</span>
-            </div>
+          <div className="flex justify-center items-center">
             <div>
               <form onSubmit={handleSearch} className="">
                 <div className="flex items-center px-6 py-3 rounded-lg mt-6">
@@ -128,35 +130,102 @@ const FeaturedProducts = () => {
             ) : (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8 justify-center m-12">
-                  {products?.map((product: Product) => (
-                    <div className="flex justify-center" key={product?._id}>
-                      <BackgroundGradient className="flex flex-col rounded-[22px] bg-white dark:bg-zinc-900 overflow-hidden h-full max-w-sm">
-                        <div className="p-6">
-                          <Image
-                            loader={myLoader}
-                            src={product.productImage}
-                            alt="productImage"
-                            height="400"
-                            width="400"
-                            className="object-contain rounded-2xl mb-2"
-                          />
-                          <p className="text-xl font-bold text-center mb-2">
-                            {truncate(product.name, 12)}
-                          </p>
-                          <div className="flex justify-between items-center space-x-4">
-                            <p className="my-3">৳ {product.price}</p>
-                            <Link
-                              href={`/products/${product._id}`}
-                              className="bg-slate-700 px-3 py-2 rounded-2xl text-sm"
-                            >
-                              <button>Details</button>
-                            </Link>
-                          </div>
+                  {urlCheck ? (
+                    <>
+                      {products?.slice(0, 4).map((product: Product) => (
+                        <div className="flex justify-center" key={product?._id}>
+                          <BackgroundGradient className="flex flex-col rounded-[22px] bg-white dark:bg-zinc-900 overflow-hidden h-full max-w-sm">
+                            <div className="p-6">
+                              <Image
+                                loader={myLoader}
+                                src={product.productImage}
+                                alt="productImage"
+                                height="400"
+                                width="400"
+                                unoptimized
+                                className="object-contain rounded-2xl mb-2"
+                              />
+                              <p className="text-xl font-bold text-center mb-2">
+                                {truncate(product.name, 12)}
+                              </p>
+                              <div className="flex justify-between items-center space-x-4">
+                                <p className="my-3">৳ {product.price}</p>
+                                <Link
+                                  href={`/products/${product._id}`}
+                                  className="bg-slate-700 px-3 py-2 rounded-2xl text-sm"
+                                >
+                                  <button>Details</button>
+                                </Link>
+                              </div>
+                            </div>
+                          </BackgroundGradient>
                         </div>
-                      </BackgroundGradient>
-                    </div>
-                  ))}
+                      ))}
+                    </>
+                  ) : (
+                    <>
+                      {products?.map((product: Product) => (
+                        <div className="flex justify-center" key={product?._id}>
+                          <BackgroundGradient className="flex flex-col rounded-[22px] bg-white dark:bg-zinc-900 overflow-hidden h-full max-w-sm">
+                            <div className="p-6">
+                              <Image
+                                loader={myLoader}
+                                src={product.productImage}
+                                alt="productImage"
+                                height="400"
+                                width="400"
+                                unoptimized
+                                className="object-contain rounded-2xl mb-2"
+                              />
+                              <p className="text-xl font-bold text-center mb-2">
+                                {truncate(product.name, 12)}
+                              </p>
+                              <div className="flex justify-between items-center space-x-4">
+                                <p className="my-3">৳ {product.price}</p>
+                                <Link
+                                  href={`/products/${product._id}`}
+                                  className="bg-slate-700 px-3 py-2 rounded-2xl text-sm"
+                                >
+                                  <button>Details</button>
+                                </Link>
+                              </div>
+                            </div>
+                          </BackgroundGradient>
+                        </div>
+                      ))}
+                    </>
+                  )}
                 </div>
+                {urlCheck ? (
+                  <></>
+                ) : (
+                  <>
+                    {" "}
+                    <div className="flex justify-center items-center my-4 space-x-4">
+                      <button
+                        onClick={() =>
+                          setCurrentPage((prev) => Math.max(prev - 1, 1))
+                        }
+                        className="bg-pink-400 px-2 py-2 rounded-md"
+                      >
+                        &larr; Prev
+                      </button>
+                      <span className="font-bold text-md"></span>
+                      Page {currentPage} of {totalPages}
+                      <button
+                        onClick={() =>
+                          setCurrentPage((prev) =>
+                            Math.min(prev + 1, totalPages)
+                          )
+                        }
+                        className="bg-pink-400 px-2 py-2 rounded-md"
+                      >
+                        {" "}
+                        Next &rarr;
+                      </button>
+                    </div>
+                  </>
+                )}
               </>
             )}
           </>

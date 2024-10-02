@@ -174,6 +174,7 @@ const Cart = () => {
                         alt="#"
                         height={2}
                         width={2}
+                        unoptimized
                       />
                       <h5>{item.productId.name}</h5>
                     </div>

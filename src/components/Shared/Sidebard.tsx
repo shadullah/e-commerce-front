@@ -195,13 +195,13 @@ export const Logo = () => (
     href="/"
     className="font-normal flex space-x-2 items-center text-sm  text-black py-1 relative z-20"
   >
-    <GiPillDrop className="h-6 w-6 text-pink-500 flex-shrink-0" />
+    <GiPillDrop className="h-6 w-6 text-violet-500 flex-shrink-0" />
     <motion.span
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="font-medium text-3xl text-black dark:text-white whitespace-pre"
     >
-      Lazz <span className="text-pink-500">Pharma</span>
+      Lazz <span className="text-violet-500">Pharma</span>
     </motion.span>
   </Link>
 );
@@ -211,6 +211,6 @@ export const LogoIcon = () => (
     href="/"
     className="font-normal flex space-x-2 items-center text-sm  text-black py-1 relative z-20"
   >
-    <GiPillDrop className="h-6 w-6 text-pink-500 flex-shrink-0" />
+    <GiPillDrop className="h-6 w-6 text-violet-500 flex-shrink-0" />
   </Link>
 );

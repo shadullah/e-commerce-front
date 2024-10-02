@@ -79,6 +79,7 @@ const Login = () => {
             placeholder="projectmayhem@fc.com"
             type="email"
             name="email"
+            required
           />
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
@@ -88,6 +89,7 @@ const Login = () => {
             name="password"
             placeholder="••••••••"
             type="password"
+            required
           />
         </LabelInputContainer>
 

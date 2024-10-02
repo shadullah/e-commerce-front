@@ -68,43 +68,77 @@ const FeaturedProducts = () => {
   };
   const pathname = usePathname();
 
-  const urlCheck = pathname === "/";
+  const homepage = pathname === "/";
 
   return (
-    <div className="py-12 bg-gray-900">
-      <div>
-        <div className="text-center">
-          <h2 className="text-base text-pink-600 font-semibold tracking-wide uppercase">
-            Featured Products
-          </h2>
-          <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
-            {" "}
-            Get Best products here
-          </p>
-        </div>
-      </div>
+    <div className="my-6 py-12 bg-gray-900">
+      <div></div>
 
-      {urlCheck ? (
-        <></>
+      {homepage ? (
+        <>
+          <div className="md:flex justify-between items-center px-3 md:px-24">
+            <div className="">
+              <h2 className="text-base text-violet-400 font-semibold tracking-wide uppercase">
+                Featured Products
+              </h2>
+              <p className="mt-2 text-lg md:text-3xl leading-8 font-extrabold tracking-tight text-white">
+                {" "}
+                Get Best products here
+              </p>
+            </div>
+            <div className="">
+              <Link href="/products">
+                <button className="text-sm md:text-lg">See More &rarr;</button>
+              </Link>
+            </div>
+          </div>
+        </>
       ) : (
         <>
-          <div className="flex justify-center items-center">
-            <div>
+          <div>
+            <div className="text-center my-2 md:my-6">
+              <h1 className="text-violet-400 text-2xl md:text-4xl font-bold mb-2">
+                All Products
+              </h1>
+              <p className="text-sm md:text-normal">
+                Explore all the products of Lazz Pharma
+              </p>
+            </div>
+            <div className="flex justify-center items-center">
               <form onSubmit={handleSearch} className="">
-                <div className="flex items-center px-6 py-3 rounded-lg mt-6">
+                <div className="flex justify-center items-center rounded-lg my-2 md:my-6">
                   <input
                     type="text"
-                    className="bg-gray-800 border-b-2 p-[2.5px] outline-none w-full"
+                    className="bg-gray-800 rounded-tl-2xl rounded-bl-2xl outline-none w-1/2 md:w-full px-3 md:px-24 py-2 md:py-4"
                     placeholder="Search Here..."
                     name="search"
                     onChange={(e) => setSearchQ(e.target.value)}
                     value={searchQ}
                   />
-                  <button type="submit" className="">
-                    <BiSearchAlt2 className="text-3xl border-b-2 p-1 " />
+                  <button
+                    type="submit"
+                    className="text-xl md:text-3xl text-gray-200 bg-gray-950 rounded-tr-2xl rounded-br-2xl px-2 md:px-3 py-2 md:py-3"
+                  >
+                    <BiSearchAlt2 className="" />
                   </button>
                 </div>
               </form>
+            </div>
+            <div className="block md:flex md:space-x-4 space-y-2 items-center px-4 md:px-16">
+              <h1 className="text-xl">Filters: </h1>
+              <div>
+                <button className="px-3 py-2 bg-slate-500 rounded-lg">
+                  Price <span>&uarr;</span>
+                </button>
+              </div>
+              <div className="flex space-x-3">
+                <div>
+                  In Stock <input type="checkbox" />
+                </div>
+                <div>
+                  Stock out <input type="checkbox" />
+                </div>
+              </div>
             </div>
           </div>
         </>
@@ -129,8 +163,8 @@ const FeaturedProducts = () => {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8 justify-center m-12">
-                  {urlCheck ? (
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-8 justify-center m-2 md:m-12">
+                  {homepage ? (
                     <>
                       {products?.slice(0, 4).map((product: Product) => (
                         <div className="flex justify-center" key={product?._id}>
@@ -196,7 +230,7 @@ const FeaturedProducts = () => {
                     </>
                   )}
                 </div>
-                {urlCheck ? (
+                {homepage ? (
                   <></>
                 ) : (
                   <>

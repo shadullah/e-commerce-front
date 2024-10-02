@@ -56,13 +56,13 @@ const Sold = () => {
   return (
     <div className="py-6 bg-gray-900 my-4">
       <div>
-        <div className="flex justify-between items-center px-12">
+        <div className="block md:flex justify-between items-center px-3 md:px-12">
           <p className=" text-xl leading-8 font-bold tracking-tight text-white sm:text-2xl">
             {" "}
             Best Selling
           </p>
           <Link href="/products">
-            <button className="text-lg">See More &rarr;</button>
+            <button className="text-sm md:text-lg">See More &rarr;</button>
           </Link>
         </div>
       </div>
@@ -87,7 +87,7 @@ const Sold = () => {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8 justify-center m-12">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-8 justify-center m-2 md:m-12">
                   {products
                     ?.filter((product: Product) => product?.top_sold === true)
                     .map((product: Product) => (

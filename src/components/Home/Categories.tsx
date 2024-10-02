@@ -36,7 +36,7 @@ const Categories = () => {
 
   return (
     <div>
-      <div className="my-8">
+      <div className="my-3 md:my-8">
         {/* <h1 className=" text-3xl font-bold text-center">Category</h1> */}
         {load ? (
           <>
@@ -44,11 +44,13 @@ const Categories = () => {
           </>
         ) : (
           <>
-            <div className="grid grid-cols-3 gap-12 mx-auto mt-3 p-6">
+            <div className="grid grid-cols-3 gap-2 md:gap-12 mx-auto mt-3 p-1 md:p-6">
               {cates.map((cat, index) => (
                 <div key={cat?.id || index}>
-                  <div className="bg-pink-100 text-gray-800 flex items-center justify-between p-6 rounded-lg">
-                    <h3 className="text-2xl font-bold">{cat.name}</h3>
+                  <div className="bg-pink-100 text-gray-800 block md:flex items-center justify-between p-2 md:p-6 rounded-lg">
+                    <h3 className="text-sm md:text-2xl font-bold">
+                      {cat.name}
+                    </h3>
                     <div>
                       <Image
                         loader={myLoader}
@@ -57,7 +59,7 @@ const Categories = () => {
                         height={300}
                         width={300}
                         unoptimized
-                        className="h-12 w-12 mx-auto rounded-md"
+                        className="h-5 md:h-12 w-5 md:w-12 mx-auto rounded-md"
                       />
                     </div>
                   </div>

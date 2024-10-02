@@ -10,8 +10,8 @@ export default function Home() {
     <main className="flex flex-col">
       <div>
         <Banner />
-        <Categories />
         <FeaturedProducts />
+        <Categories />
         <Viewed />
         <Sold />
       </div>

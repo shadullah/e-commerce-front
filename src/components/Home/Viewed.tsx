@@ -56,13 +56,13 @@ const Viewed = () => {
   return (
     <div className="mt-6 ">
       <div>
-        <div className="flex justify-between items-center px-12">
+        <div className="block md:flex justify-between items-center px-2 md:px-12">
           <p className=" text-xl leading-8 font-bold tracking-tight text-white sm:text-2xl">
             {" "}
             Most viewed
           </p>
           <Link href="/products">
-            <button className="text-lg">See More &rarr;</button>
+            <button className="text-sm md:text-lg">See More &rarr;</button>
           </Link>
         </div>
       </div>
@@ -85,7 +85,7 @@ const Viewed = () => {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8 justify-center m-12">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-8 justify-center m-3 md:m-12">
                   {products
                     ?.filter((product: Product) => product?.viewed === true)
                     .map((product: Product) => (

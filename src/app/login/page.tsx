@@ -33,6 +33,11 @@ const Login = () => {
         {
           email: formData.get("email"),
           password: formData.get("password"),
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
 

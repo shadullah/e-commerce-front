@@ -28,10 +28,13 @@ const Login = () => {
     const formData = new FormData(e.currentTarget);
 
     try {
-      const res = await axios.post("http://localhost:8000/api/v1/users/login", {
-        email: formData.get("email"),
-        password: formData.get("password"),
-      });
+      const res = await axios.post(
+        "https://e-commerce-backend-gamma-five.vercel.app/api/v1/users/login",
+        {
+          email: formData.get("email"),
+          password: formData.get("password"),
+        }
+      );
 
       const { accessToken, refreshToken, user } = res.data?.data;
       console.log(res.data?.data);

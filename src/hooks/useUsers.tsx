@@ -26,7 +26,7 @@ const useUsers = (): any => {
         const token = localStorage.getItem("accessToken");
 
         const res = await axios.get(
-          `http://localhost:8000/api/v1/users/${getIdLocal()}`,
+          `https://e-commerce-backend-gamma-five.vercel.app/api/v1/users/${getIdLocal()}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

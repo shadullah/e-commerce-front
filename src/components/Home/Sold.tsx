@@ -35,7 +35,7 @@ const Sold = () => {
     const fetchProducts = async () => {
       try {
         const res = await axios.get<ApiResponse>(
-          "http://localhost:8000/api/v1/products"
+          "https://e-commerce-backend-gamma-five.vercel.app/api/v1/products"
         );
         // console.log(res?.data);
         setProducts(res?.data?.data.products);

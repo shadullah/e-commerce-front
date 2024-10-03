@@ -23,7 +23,7 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/v1/users/register",
+        "https://e-commerce-backend-gamma-five.vercel.app/api/v1/users/register",
         {
           fullname: formData.get("fullname"),
           email: formData.get("email"),

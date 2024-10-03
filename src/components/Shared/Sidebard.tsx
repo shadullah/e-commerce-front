@@ -13,6 +13,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import useUsers from "@/hooks/useUsers";
 import { RiShoppingBagLine } from "react-icons/ri";
+import { jwtDecode } from "jwt-decode";
 
 const myLoader = ({ src }: { src: string }) => {
   return src;
@@ -34,7 +35,16 @@ export function Sidebard({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const checkLoginStatus = () => {
       const access = localStorage.getItem("accessToken");
-      setIsLoggedin(!!access);
+      if (access) {
+        const decodedToken: any = jwtDecode(access);
+        const currentTime = Date.now() / 1000;
+
+        if (decodedToken.exp < currentTime) {
+          handleLogout();
+        } else {
+          setIsLoggedin(true);
+        }
+      }
     };
 
     checkLoginStatus();

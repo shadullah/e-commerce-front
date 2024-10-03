@@ -21,7 +21,7 @@ const Categories = () => {
     const getCates = async () => {
       try {
         const res = await axios.get(
-          "https://e-commerce-backend-gamma-five.vercel.app/api/v1/category/all"
+          "http://localhost:8000/api/v1/category/all"
         );
         // console.log(res.data);
         setCates(res?.data?.data);

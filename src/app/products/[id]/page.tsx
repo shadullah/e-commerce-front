@@ -48,7 +48,7 @@ const ProductDetails = ({ params }: any) => {
     const fetchDetails = async () => {
       try {
         const res = await axios.get<ApiResponse>(
-          `https://e-commerce-backend-gamma-five.vercel.app/api/v1/products/${id}`
+          `http://localhost:8000/api/v1/products/${id}`
         );
         console.log(res.data);
         setProduct(res.data?.data);
@@ -76,7 +76,7 @@ const ProductDetails = ({ params }: any) => {
       if (product?.category) {
         try {
           const res = await axios.get(
-            `https://e-commerce-backend-gamma-five.vercel.app/api/v1/category/all/${product.category}`
+            `http://localhost:8000/api/v1/category/all/${product.category}`
           );
           setCat(res.data?.data);
         } catch (error) {
@@ -107,7 +107,7 @@ const ProductDetails = ({ params }: any) => {
       console.log(product._id);
 
       await axios.post(
-        "https://e-commerce-backend-gamma-five.vercel.app/api/v1/carts/create",
+        "http://localhost:8000/api/v1/carts/create",
         {
           productId: product._id,
           quantity: 1,

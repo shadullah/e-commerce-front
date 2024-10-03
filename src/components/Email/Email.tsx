@@ -13,7 +13,7 @@ const Email = () => {
   useEffect(() => {
     const verifyEmailUrl = async () => {
       try {
-        const url = `https://e-commerce-backend-gamma-five.vercel.app/api/users/${param.id}/verify/${param.token}`;
+        const url = `http://localhost:8000/api/users/${param.id}/verify/${param.token}`;
         const { data } = await axios.get(url);
         console.log(data);
         setValUrl(true);

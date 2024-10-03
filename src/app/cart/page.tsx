@@ -54,7 +54,7 @@ const Cart = () => {
         }
 
         const res = await axios.get<ApiResponse<CartItem[]>>(
-          `https://e-commerce-backend-gamma-five.vercel.app/api/v1/carts/user/${id}`,
+          `http://localhost:8000/api/v1/carts/user/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -109,7 +109,7 @@ const Cart = () => {
       // {{server}}/carts/66be0c2639a62d3bf11ff0f1
       await cartItems.map((item) => {
         axios.patch(
-          `https://e-commerce-backend-gamma-five.vercel.app/api/v1/carts/${item._id}`,
+          `http://localhost:8000/api/v1/carts/${item._id}`,
           {
             quantity: item?.quantity,
           },
@@ -131,7 +131,7 @@ const Cart = () => {
   const handleDelete = async (itemId: string) => {
     try {
       axios.delete(
-        `https://e-commerce-backend-gamma-five.vercel.app/api/v1/carts/user/${itemId}`,
+        `http://localhost:8000/api/v1/carts/user/${itemId}`,
 
         {
           headers: {

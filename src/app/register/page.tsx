@@ -23,19 +23,8 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        "https://e-commerce-backend-gamma-five.vercel.app/api/v1/users/register",
-        {
-          fullname: formData.get("fullname"),
-          email: formData.get("email"),
-          password: formData.get("password"),
-          role: formData.get("role"),
-          photo: formData.get("photo"),
-        },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        "http://localhost:8000/api/v1/users/register",
+        formData
       );
 
       if (response.status === 201) {

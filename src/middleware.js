@@ -15,6 +15,6 @@
 //   }
 // };
 
-// export const config = {
-//   matcher: ["/dashboard", "/order"],
-// };
+export const config = {
+  matcher: ["/dashboard", "/order"],
+};

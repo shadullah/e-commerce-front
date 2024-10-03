@@ -30,10 +30,10 @@ const Login = () => {
     try {
       const res = await axios.post(
         "https://e-commerce-backend-gamma-five.vercel.app/api/v1/users/login",
-        {
+        JSON.stringify({
           email: formData.get("email"),
           password: formData.get("password"),
-        },
+        }),
         {
           headers: {
             "Content-Type": "multipart/form-data",

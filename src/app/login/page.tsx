@@ -35,7 +35,7 @@ const Login = () => {
         JSON.stringify({ email, password }), // Corrected here
         {
           headers: {
-            "Content-Type": "application/json", // Corrected here
+            "Content-Type": "multiform/form-data", // Corrected here
           },
         }
       );

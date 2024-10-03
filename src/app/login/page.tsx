@@ -39,10 +39,12 @@ const Login = () => {
         }),
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
           },
         }
       );
+
+      console.log(email, password);
 
       const { accessToken, refreshToken, user } = res.data?.data;
       console.log(res.data?.data);

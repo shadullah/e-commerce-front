@@ -23,7 +23,8 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/v1/users/register",
+        // "http://localhost:8000/api/v1/users/register",
+        "https://e-commerce-backend-gamma-five.vercel.app/api/v1/users/register",
         formData
       );
 
@@ -83,7 +84,7 @@ const Register = () => {
             name="email"
           />
         </LabelInputContainer>
-        <LabelInputContainer className="mb-4">
+        {/* <LabelInputContainer className="mb-4">
           <Label htmlFor="file">Profile photo</Label>
           <Input
             id="photo"
@@ -92,7 +93,7 @@ const Register = () => {
             required
             name="photo"
           />
-        </LabelInputContainer>
+        </LabelInputContainer> */}
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
           <Input

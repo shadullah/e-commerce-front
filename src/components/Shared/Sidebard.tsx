@@ -30,30 +30,23 @@ export function Sidebard({ children }: { children: React.ReactNode }) {
   const [isLoggedIn, setIsLoggedin] = useState(false);
   const users = useUsers();
 
-  // const user = users.length > 0 ? users[0] : null;
+  const checkLoginStatus = () => {
+    const access = localStorage.getItem("accessToken");
+    if (access) {
+      const decodedToken: any = jwtDecode(access);
+      const currentTime = Date.now() / 1000;
+
+      if (decodedToken.exp && decodedToken.exp < currentTime) {
+        handleLogout();
+      } else {
+        setIsLoggedin(true);
+      }
+    }
+  };
 
   useEffect(() => {
-    const checkLoginStatus = () => {
-      const access = localStorage.getItem("accessToken");
-      // if (access) {
-      //   const decodedToken: any = jwtDecode(access);
-      //   const currentTime = Date.now() / 1000;
-
-      //   if (decodedToken.exp < currentTime) {
-      //     handleLogout();
-      //   } else {
-      //     setIsLoggedin(true);
-      //   }
-      // }
-    };
-
     checkLoginStatus();
-
-    if (pathname) {
-      checkLoginStatus();
-    }
   }, [pathname]);
-
   const handleLogout = () => {
     // setLoading(true);
     try {

@@ -24,7 +24,7 @@ const OrderPage = () => {
     }
 
     axios
-      .post("/create-payment", {
+      .post("/api/v1/create-payment", {
         amount: numeric,
         currency: "BDT",
       })

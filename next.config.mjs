@@ -8,8 +8,9 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "http://localhost:8000/api/:path*",
-        // "https://e-commerce-backend-gamma-five.vercel.app/api/:path*",
+        destination:
+          "https://e-commerce-backend-gamma-five.vercel.app/api/:path*",
+        // "http://localhost:8000/api/:path*",
       },
     ];
   },

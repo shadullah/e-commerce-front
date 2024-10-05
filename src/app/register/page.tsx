@@ -25,7 +25,12 @@ const Register = () => {
       const response = await axios.post(
         // "/api/v1/users/register",
         "/api/v1/users/register",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
 
       if (response.status === 201) {

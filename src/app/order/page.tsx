@@ -24,7 +24,7 @@ const OrderPage = () => {
     }
 
     axios
-      .post("http://localhost:8000/create-payment", {
+      .post("https://e-commerce-backend-gamma-five.vercel.app/create-payment", {
         amount: numeric,
         currency: "BDT",
       })

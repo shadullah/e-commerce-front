@@ -39,8 +39,8 @@ const FeaturedProducts = () => {
     const fetchProducts = async () => {
       try {
         const url = searchQ
-          ? `http://localhost:8000/api/v1/products?search=${searchQ}`
-          : `http://localhost:8000/api/v1/products?page=${currentPage}`;
+          ? `https://e-commerce-backend-gamma-five.vercel.app/api/v1/products?search=${searchQ}`
+          : `https://e-commerce-backend-gamma-five.vercel.app/api/v1/products?page=${currentPage}`;
         const res = await axios.get<ApiResponse>(url);
         console.log(res?.data.data);
         const fetchedProducts = res.data.data.products || [];

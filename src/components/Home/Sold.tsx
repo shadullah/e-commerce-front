@@ -34,9 +34,7 @@ const Sold = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get<ApiResponse>(
-          "https://e-commerce-backend-gamma-five.vercel.app/api/v1/products"
-        );
+        const res = await axios.get<ApiResponse>("/api/v1/products");
         // console.log(res?.data);
         setProducts(res?.data?.data.products);
       } catch (err) {

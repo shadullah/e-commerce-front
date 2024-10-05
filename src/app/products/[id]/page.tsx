@@ -47,9 +47,7 @@ const ProductDetails = ({ params }: any) => {
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const res = await axios.get<ApiResponse>(
-          `https://e-commerce-backend-gamma-five.vercel.app/api/v1/products/${id}`
-        );
+        const res = await axios.get<ApiResponse>(`/api/v1/products/${id}`);
         console.log(res.data);
         setProduct(res.data?.data);
       } catch (err) {
@@ -76,7 +74,7 @@ const ProductDetails = ({ params }: any) => {
       if (product?.category) {
         try {
           const res = await axios.get(
-            `https://e-commerce-backend-gamma-five.vercel.app/api/v1/category/all/${product.category}`
+            `/api/v1/category/all/${product.category}`
           );
           setCat(res.data?.data);
         } catch (error) {
@@ -107,7 +105,7 @@ const ProductDetails = ({ params }: any) => {
       console.log(product._id);
 
       await axios.post(
-        "https://e-commerce-backend-gamma-five.vercel.app/api/v1/carts/create",
+        "/api/v1/carts/create",
         {
           productId: product._id,
           quantity: 1,

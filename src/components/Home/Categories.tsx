@@ -20,9 +20,7 @@ const Categories = () => {
   useEffect(() => {
     const getCates = async () => {
       try {
-        const res = await axios.get(
-          "https://e-commerce-backend-gamma-five.vercel.app/api/v1/category/all"
-        );
+        const res = await axios.get("/api/v1/category/all");
         // console.log(res.data);
         setCates(res?.data?.data);
       } catch (error) {

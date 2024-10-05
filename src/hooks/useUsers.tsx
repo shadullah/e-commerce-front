@@ -25,14 +25,11 @@ const useUsers = (): any => {
       try {
         const token = localStorage.getItem("accessToken");
 
-        const res = await axios.get(
-          `https://e-commerce-backend-gamma-five.vercel.app/api/v1/users/${getIdLocal()}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const res = await axios.get(`/api/v1/users/${getIdLocal()}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         // console.log(res?.data?.data);
         setUsers(res?.data?.data);
       } catch (error) {

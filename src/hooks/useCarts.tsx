@@ -10,9 +10,7 @@ const useCarts = () => {
       try {
         const userId = localStorage.getItem("id");
 
-        const res = await axios.get(
-          `https://e-commerce-backend-gamma-five.vercel.app/api/v1/carts/user/${userId}`
-        );
+        const res = await axios.get(`/api/v1/carts/user/${userId}`);
         console.log(res?.data?.data);
         setCarts(res?.data?.data);
       } catch (error) {

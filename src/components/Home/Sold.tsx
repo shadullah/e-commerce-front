@@ -1,10 +1,13 @@
 "use client";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Audio } from "react-loader-spinner";
 import { BackgroundGradient } from "../ui/background-gradient";
+import Flicking from "@egjs/react-flicking";
+import "@egjs/react-flicking/dist/flicking.css";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const myLoader = ({ src }: { src: string }) => {
   return src;
@@ -30,6 +33,8 @@ interface ApiResponse {
 const Sold = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isAnimating, setIsAnimating] = useState<boolean>(false);
+  const flickingRef = useRef<Flicking | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -49,6 +54,28 @@ const Sold = () => {
   const truncate = (str: string, len: number) => {
     if (str.length <= len) return str;
     return str.slice(0, len) + "...";
+  };
+
+  const handlePrev = () => {
+    if (!isAnimating && flickingRef.current) {
+      const flicking = flickingRef.current;
+      if (flicking.index > 0) {
+        // Check to avoid moving beyond first item
+        setIsAnimating(true);
+        flicking.prev(300).finally(() => setIsAnimating(false));
+      }
+    }
+  };
+
+  const handleNext = () => {
+    if (!isAnimating && flickingRef.current) {
+      const flicking = flickingRef.current;
+      if (flicking.index < flicking.panelCount - 1) {
+        // Check to avoid moving beyond last item
+        setIsAnimating(true);
+        flicking.next(300).finally(() => setIsAnimating(false));
+      }
+    }
   };
 
   return (
@@ -85,38 +112,62 @@ const Sold = () => {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-8 justify-center m-2 md:m-12">
-                  {products
-                    ?.filter((product: Product) => product?.top_sold === true)
-                    .map((product: Product) => (
-                      <div className="flex justify-center" key={product?._id}>
-                        <BackgroundGradient className="flex flex-col rounded-[22px] bg-white dark:bg-zinc-900 overflow-hidden h-full max-w-sm">
-                          <div className="p-6">
-                            <Image
-                              loader={myLoader}
-                              src={product.productImage}
-                              alt="productImage"
-                              height="400"
-                              width="400"
-                              unoptimized
-                              className="object-contain rounded-2xl mb-2"
-                            />
-                            <p className="text-xl font-bold text-center mb-2">
-                              {truncate(product.name, 12)}
-                            </p>
-                            <div className="flex justify-between items-center space-x-4">
-                              <p className="my-3">৳ {product.price}</p>
-                              <Link
-                                href={`/products/${product._id}`}
-                                className="bg-slate-700 px-3 py-2 rounded-2xl text-sm"
-                              >
-                                <button>Details</button>
-                              </Link>
+                <div className="px-20">
+                  <Flicking
+                    ref={flickingRef}
+                    moveType="freeScroll"
+                    bound={true}
+                    className="w-full"
+                  >
+                    {products
+                      ?.filter((product: Product) => product?.top_sold === true)
+                      .map((product: Product) => (
+                        <div className="m-3 w-64" key={product?._id}>
+                          <BackgroundGradient className="flex flex-col rounded-[22px] bg-white dark:bg-zinc-900 overflow-hidden h-full max-w-sm">
+                            <div className="p-6">
+                              <div className="flex items-end">
+                                <Image
+                                  loader={myLoader}
+                                  src={product.productImage}
+                                  alt="productImage"
+                                  height="400"
+                                  width="400"
+                                  unoptimized
+                                  className="object-contain  rounded-2xl mb-2"
+                                />
+                              </div>
+                              <p className="text-xl font-bold text-center mb-2">
+                                {truncate(product.name, 12)}
+                              </p>
+                              <div className="flex justify-between items-center space-x-4">
+                                <p className="my-3">৳ {product.price}</p>
+                                <Link
+                                  href={`/products/${product._id}`}
+                                  className="bg-slate-700 px-3 py-2 rounded-2xl text-sm"
+                                >
+                                  <button>Details</button>
+                                </Link>
+                              </div>
                             </div>
-                          </div>
-                        </BackgroundGradient>
-                      </div>
-                    ))}
+                          </BackgroundGradient>
+                        </div>
+                      ))}
+                  </Flicking>
+
+                  <div className="flex justify-end space-x-3 py-6">
+                    <button
+                      onClick={handlePrev}
+                      className="bg-gray-700 p-3 rounded-full"
+                    >
+                      <FaChevronLeft />
+                    </button>
+                    <button
+                      onClick={handleNext}
+                      className="bg-gray-700 p-3 rounded-full"
+                    >
+                      <FaChevronRight />
+                    </button>
+                  </div>
                 </div>
               </>
             )}

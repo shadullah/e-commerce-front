@@ -134,11 +134,11 @@ const ProductDetails = ({ params }: any) => {
 
   return (
     <div>
-      <h1 className="text-5xl font-bold mt-36 mb-12 text-center">
+      <h1 className="text-2xl md:text-5xl font-bold mt-12 md:mt-16 mb-6 md:mb-12 text-center">
         Details page
       </h1>
       <div>
-        <div className="flex justify-center items-center mx-3 md:mx-12">
+        <div className="block md:flex justify-center items-center mx-3 md:mx-12">
           {loading ? (
             <div>
               <Audio
@@ -166,11 +166,11 @@ const ProductDetails = ({ params }: any) => {
                 )}
               </div>
               <div className="w-full md:w-1/2 p-2 md:p-6">
-                <h1 className="text-2xl font-extrabold my-3">
+                <h1 className="text-lg md:text-2xl font-extrabold my-3">
                   {product?.name}
                 </h1>
                 <p className="text-md">{product?.description}</p>
-                <div className="flex items-center space-x-2 mt-3">
+                <div className="flex items-center space-x-2 my-3">
                   {cat?.thumbnail && (
                     <Image
                       loader={myLoader}
@@ -191,7 +191,7 @@ const ProductDetails = ({ params }: any) => {
                     <span className="text-red-600">Out of Stock</span>
                   )}
                 </p>
-                <div className="flex items-center space-x-6">
+                <div className="block md:flex items-center space-y-2 md:space-x-6">
                   <h3 className="text-orange-600 text-3xl font-bold my-3">
                     ৳ {product?.price}
                   </h3>

@@ -112,7 +112,7 @@ const Sold = () => {
               </div>
             ) : (
               <>
-                <div className="px-20">
+                <div className="px-3 md:px-20">
                   <Flicking
                     ref={flickingRef}
                     moveType="freeScroll"
@@ -122,20 +122,18 @@ const Sold = () => {
                     {products
                       ?.filter((product: Product) => product?.top_sold === true)
                       .map((product: Product) => (
-                        <div className="m-3 w-64" key={product?._id}>
+                        <div className="m-3 w-48 md:w-64" key={product?._id}>
                           <BackgroundGradient className="flex flex-col rounded-[22px] bg-white dark:bg-zinc-900 overflow-hidden h-full max-w-sm">
-                            <div className="p-6">
-                              <div className="flex items-end">
-                                <Image
-                                  loader={myLoader}
-                                  src={product.productImage}
-                                  alt="productImage"
-                                  height="400"
-                                  width="400"
-                                  unoptimized
-                                  className="object-contain  rounded-2xl mb-2"
-                                />
-                              </div>
+                            <div className="p-2 md:p-6">
+                              <Image
+                                loader={myLoader}
+                                src={product.productImage}
+                                alt="productImage"
+                                height="400"
+                                width="400"
+                                unoptimized
+                                className="object-contain  rounded-2xl mb-2"
+                              />
                               <p className="text-xl font-bold text-center mb-2">
                                 {truncate(product.name, 12)}
                               </p>

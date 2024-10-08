@@ -1,6 +1,6 @@
 # Lazz Pharma(A pharmaceutical e-commercer app)
 
-Lazz pharma is an e-commerce website which is built using React, NextJs, Typescript, Tailwind Css, Aceternity UI, NodeJs, MongoDB, Mongoose ,React-icons and many more to go.
+Lazz pharma is an e-commerce website which is built using React, NextJs, Typescript, Tailwind Css, Aceternity UI, NodeJs, MongoDB, Mongoose ,React-icons, JWT, SSLCommerze for payment gateway and many more.
 
 ## Backend github link
 
@@ -36,9 +36,9 @@ npm run dev
 
 ## Features
 
-1. **Authentication:** Authentication with roles.
+1. **Authentication:** Authentication with roles and JWT used for accessToken & refreshToken.
    
-2. **Adding Products:** Users can add new task to the website, providing details.
+2. **CRUD on Products:** Users can add to cart, remove from cart, order Products new task to the website, providing details.
    
 3. **List of Product:** The website displays a list of Products, allowing users to browse through upcoming Products.
 
@@ -52,3 +52,4 @@ npm run dev
 - NodeJs,
 - MongoDB,
 - Mongoose
+- SSLCommerze for payment gateway

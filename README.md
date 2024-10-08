@@ -7,7 +7,7 @@ Lazz pharma is an e-commerce website which is built using React, NextJs, Typescr
 Watch backend code demo here:
 
 ```bash
-https://github.com/shadullah/lazz-pharma-backend
+https://github.com/shadullah/e-commerce-back
 ```
 
 ## Live Demo
@@ -15,7 +15,7 @@ https://github.com/shadullah/lazz-pharma-backend
 Watch Live demo here:
 
 ```bash
-https://lazz-pharma-front.vercel.app/
+https://e-commerce-front-blond-three.vercel.app/
 ```
 
 ## Installation

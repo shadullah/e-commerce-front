@@ -38,9 +38,9 @@ npm run dev
 
 1. **Authentication:** Authentication with roles and JWT used for accessToken & refreshToken.
    
-2. **CRUD on Products:** Users can add to cart, remove from cart, order Products new task to the website, providing details.
+2. **CRUD on Products:** Users can add to cart, remove from cart, order Products providing details.
    
-3. **List of Product:** The website displays a list of Products, allowing users to browse through upcoming Products.
+3. **Payment Gateway:** Implemented payment gateway with SSLCommerze.
 
 ## Technologies Used
 

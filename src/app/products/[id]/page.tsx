@@ -1,7 +1,7 @@
 "use client";
 import useCarts from "@/hooks/useCarts";
 import { addToCart } from "@/store/Reducers/cartSlice";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -41,7 +41,6 @@ const ProductDetails = ({ params }: any) => {
   const [product, setProduct] = useState<Product | null>(null);
   const [cat, setCat] = useState<Category | null>(null);
   const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
   const [carts] = useCarts();
 
   useEffect(() => {
@@ -61,9 +60,6 @@ const ProductDetails = ({ params }: any) => {
   }, [id]);
 
   console.log(product?._id);
-
-  const existingCartItem = carts.map((cart) => cart.productId);
-  console.log(JSON.stringify(existingCartItem));
 
   const cursorControl = product?.stock;
   const discount = product ? product?.discount : 0;
@@ -101,8 +97,6 @@ const ProductDetails = ({ params }: any) => {
         toast.error("Failed to fetch userId");
         return;
       }
-      console.log(carts);
-      console.log(product._id);
 
       await axios.post(
         "/api/v1/carts/create",
@@ -118,17 +112,17 @@ const ProductDetails = ({ params }: any) => {
         }
       );
 
-      dispatch(
-        addToCart({
-          productId: product._id,
-          quantity: 1,
-          customer: userId,
-        })
-      );
-
       toast.success("Product added to cart!");
     } catch (error) {
-      toast.error("Failed to add product to cart");
+      if (error instanceof AxiosError) {
+        if (error.response && error.response.status === 400) {
+          toast.error("Product is already in the cart");
+        } else {
+          toast.error("Failed to add product to cart");
+        }
+      } else {
+        toast.error("An unexpected error occured");
+      }
     }
   };
 

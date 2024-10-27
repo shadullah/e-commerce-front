@@ -131,30 +131,28 @@ const Cart = () => {
   //   }
   // };
 
-  // const handleDelete = async (itemId: string) => {
-  //   try {
-  //     axios.delete(
-  //       `/api/v1/carts/user/${itemId}`,
-
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  //         },
-  //         data: {
-  //           customerId: cartItems?.find((item) => item?._id === itemId)
-  //             ?.customer,
-  //         },
-  //       }
-  //     );
-  //     setCartItems((prevItems) =>
-  //       prevItems.filter((item) => item._id !== itemId)
-  //     );
-  //     toast.success("deleted successfully!!");
-  //   } catch (error) {
-  //     toast.error("Couldn't Delete the item");
-  //     console.log(error);
-  //   }
-  // };
+  const handleDelete = async (productId: string) => {
+    try {
+      const id = localStorage.getItem("id");
+      if (!id) {
+        toast.error("User id not found");
+      }
+      // const productId = carts.find(item=>item.productId)
+      // console.log(productId);
+      axios.delete(`/api/v1/carts/user/${id}/product/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      setCarts((prevItems) =>
+        prevItems.filter((item) => item.productId._id !== productId)
+      );
+      toast.success("deleted successfully!!");
+    } catch (error) {
+      toast.error("Couldn't Delete the item");
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -205,7 +203,7 @@ const Cart = () => {
                     <div>
                       <button
                         className="bg-gray-400 p-3 rounded-full"
-                        // onClick={() => handleDelete(item._id)}
+                        onClick={() => handleDelete(item.productId._id)}
                       >
                         <IoMdClose />
                       </button>
@@ -241,7 +239,7 @@ const Cart = () => {
           </div>
           <div>
             <button
-              // onClick={handleCartUpdate}
+              // onClick={handle}
               className="bg-gray-800 w-full text-gray-100 py-2 rounded-md my-3"
             >
               GO TO CHECKOUT &rarr;

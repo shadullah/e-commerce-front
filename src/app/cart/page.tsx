@@ -39,6 +39,7 @@ interface ApiResponse<T> {
 const Cart = () => {
   const [carts, setCarts] = useState<CartProduct[]>([]);
   const [loading, setLoading] = useState(true);
+  const [cartId, setCartId] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -64,6 +65,8 @@ const Cart = () => {
           }
         );
         const cartData = res?.data?.data?.cartItems || "";
+        const cartId = res?.data?.data?._id;
+        setCartId(cartId);
         console.log(cartData);
         setCarts(cartData);
       } catch (err) {
@@ -102,34 +105,38 @@ const Cart = () => {
 
   const ttl = Subtotal;
 
-  // const handleCartUpdate = async () => {
-  //   try {
-  //     const token = localStorage.getItem("accessToken");
-  //     if (!token) {
-  //       toast.error("user not authenticated");
-  //       return;
-  //     }
-  //     // {{server}}/carts/66be0c2639a62d3bf11ff0f1
-  //     await cartItems.map((item) => {
-  //       axios.patch(
-  //         `/api/v1/carts/${item._id}`,
-  //         {
-  //           quantity: item?.quantity,
-  //         },
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  //           },
-  //         }
-  //       );
-  //     });
-  //     router.push(`/order?ttl=${ttl}`);
-  //     toast.success("Cart updated success");
-  //   } catch (err) {
-  //     console.log(err);
-  //     toast.error("error in update", { duration: 3000 });
-  //   }
-  // };
+  // const productId = carts.find(item=>)
+
+  const handleCartUpdate = async (cartData: Cart) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        toast.error("user not authenticated");
+        return;
+      }
+
+      await carts.map((item) => {
+        console.log(item);
+        axios.patch(
+          `/api/v1/carts/${cartId}`,
+          {
+            productId: item.productId._id,
+            quantity: item?.quantity,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+      });
+      router.push(`/order?ttl=${ttl}`);
+      toast.success("Cart updated success");
+    } catch (err) {
+      console.log(err);
+      toast.error("error in update", { duration: 3000 });
+    }
+  };
 
   const handleDelete = async (productId: string) => {
     try {
@@ -160,7 +167,6 @@ const Cart = () => {
         <div className="w-full p-6 ">
           <h1 className="text-2xl font-medium my-4">Overview of your order</h1>
           <div className="">
-            {/* cat length = {carts?.length} */}
             {carts?.length > 0 ? (
               <>
                 {carts.map((item) => (
@@ -239,7 +245,7 @@ const Cart = () => {
           </div>
           <div>
             <button
-              // onClick={handle}
+              onClick={handleCartUpdate}
               className="bg-gray-800 w-full text-gray-100 py-2 rounded-md my-3"
             >
               GO TO CHECKOUT &rarr;

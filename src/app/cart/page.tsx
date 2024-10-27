@@ -56,7 +56,7 @@ const Cart = () => {
           toast.error("User id not found");
         }
 
-        const res = await axios.get<ApiResponse<Cart[]>>(
+        const res = await axios.get<ApiResponse<Cart>>(
           `/api/v1/carts/user/${id}`,
           {
             headers: {
@@ -107,7 +107,7 @@ const Cart = () => {
 
   // const productId = carts.find(item=>)
 
-  const handleCartUpdate = async (cartData: Cart) => {
+  const handleCartUpdate = async () => {
     try {
       const token = localStorage.getItem("accessToken");
       if (!token) {

@@ -6,6 +6,7 @@ import React, { useEffect, Suspense } from "react";
 const OrderPage = () => {
   const router = useRouter();
   const search = useSearchParams();
+  const myId = localStorage.getItem("id");
 
   const ttl = search.get("ttl") || "0";
 
@@ -25,6 +26,7 @@ const OrderPage = () => {
 
     axios
       .post("/api/v1/create-payment", {
+        customer: myId,
         amount: numeric,
         currency: "BDT",
       })

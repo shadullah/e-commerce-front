@@ -163,16 +163,18 @@ const Cart = () => {
 
   return (
     <div>
-      <div className="main flex justify-between mx-12">
+      <div className="main block md:flex justify-between mx-0 md:mx-12">
         <div className="w-full p-6 ">
-          <h1 className="text-2xl font-medium my-4">Overview of your order</h1>
+          <h1 className="text-xl md:text-2xl font-medium my-4">
+            Overview of your order
+          </h1>
           <div className="">
             {carts?.length > 0 ? (
               <>
                 {carts.map((item) => (
                   <div
                     key={item?._id}
-                    className="grid grid-cols-4 items-center gap-6 bg-gray-800 p-3 m-3 rounded-md"
+                    className="grid grid-cols-1 md:grid-cols-4 items-center text-center gap-6 bg-gray-800 p-3 m-3 rounded-md"
                   >
                     <div className="flex justify-center items-center">
                       <Image
@@ -224,8 +226,10 @@ const Cart = () => {
             )}
           </div>
         </div>
-        <div className="w-1/4 p-6">
-          <h1 className="text-2xl font-medium my-4">Order Details</h1>
+        <div className="w-full md:w-1/4 p-6">
+          <h1 className="text-xl md:text-2xl font-medium my-4">
+            Order Details
+          </h1>
           <div className="p-3 bg-gray-300 rounded-md space-y-2 text-gray-600">
             <div className="text-sm flex justify-between">
               <p>Subtotal: </p>

@@ -117,11 +117,15 @@ const OrderPage = () => {
 
   return (
     <div>
-      <h1 className="text-5xl font-bold  my-12 text-center">Order page</h1>
+      <h1 className="text-3xl md:text-5xl font-bold  my-12 text-center">
+        Order page
+      </h1>
       <div className="block md:flex justify-between my-6">
-        <div className="w-full m-6">
-          <h1 className="text-2xl font-medium my-6">Billing Details</h1>
-          <div className="m-12">
+        <div className="w-full m-0 md:m-6">
+          <h1 className="text-xl md:text-2xl font-medium my-6">
+            Billing Details
+          </h1>
+          <div className="m-2 md:m-12">
             <LabelInputContainer className="mb-4">
               <Label htmlFor="street">Street Address *</Label>
               <Input
@@ -174,8 +178,8 @@ const OrderPage = () => {
             </LabelInputContainer>
           </div>
         </div>
-        <div className="w-1/3 m-6">
-          <h1 className="text-2xl font-medium my-6">Your Order</h1>
+        <div className="w-full md:w-1/3 m-2 md:m-6">
+          <h1 className="text-xl md:text-2xl font-medium my-6">Your Order</h1>
           <div>
             <h3 className="text-xl">Products</h3>
             <div className="">
@@ -213,15 +217,15 @@ const OrderPage = () => {
             </div>
           </div>
           <div>
-            <div className="text-lg font-bold ">
+            <div className="text-md md:text-lg font-bold ">
               <p className="mr-2">Subtotal: ${Subtotal} </p>
 
               <p> </p>
             </div>
           </div>
-          <div className="flex justify-center mt-12 ease-in-out">
+          <div className="flex justify-center mt-6 md:mt-12 ease-in-out">
             <button
-              className="w-full px-3 py-2 bg-gray-700 hover:bg-green-500 rounded-lg transition duration-300 ease-in-out"
+              className="w-48 text-nowrap md:w-full px-3 py-2 bg-gray-700 hover:bg-green-500 rounded-lg transition duration-300 ease-in-out"
               onClick={handlePayment}
             >
               Proceed to Pay

@@ -157,7 +157,7 @@ export function Sidebard({ children }: { children: React.ReactNode }) {
                 <SidebarLink
                   link={{
                     label: "Guest",
-                    href: "/dashboard",
+                    href: "/",
                     icon: (
                       <Image
                         loader={myLoader}

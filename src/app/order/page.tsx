@@ -228,7 +228,7 @@ const OrderPage = () => {
               className="w-48 text-nowrap md:w-full px-3 py-2 bg-gray-700 hover:bg-green-500 rounded-lg transition duration-300 ease-in-out"
               onClick={handlePayment}
             >
-              Proceed to Pay
+              Proceed to Pay &rarr;
             </button>
           </div>
         </div>

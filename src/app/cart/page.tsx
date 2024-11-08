@@ -161,6 +161,15 @@ const Cart = () => {
     }
   };
 
+  const [isLoggedIn, setIsLoggedin] = useState(false);
+
+  useEffect(() => {
+    const user = localStorage.getItem("accessToken");
+    if (user) {
+      setIsLoggedin(true);
+    }
+  }, []);
+
   return (
     <div>
       <div className="main block md:flex justify-between mx-0 md:mx-12">
@@ -247,14 +256,20 @@ const Cart = () => {
               <p>${ttl.toFixed(2)}</p>
             </div>
           </div>
-          <div>
-            <button
-              onClick={handleCartUpdate}
-              className="bg-gray-800 w-full text-gray-100 py-2 rounded-md my-3"
-            >
-              GO TO CHECKOUT &rarr;
-            </button>
-          </div>
+          {isLoggedIn ? (
+            <>
+              <div>
+                <button
+                  onClick={handleCartUpdate}
+                  className="bg-gray-800 w-full text-gray-100 py-2 rounded-md my-3"
+                >
+                  GO TO CHECKOUT &rarr;
+                </button>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>

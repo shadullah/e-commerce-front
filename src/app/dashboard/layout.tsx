@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import { Toaster } from "react-hot-toast";
-import { Sidebard } from "@/components/Shared//Sidebard";
+import { MyDash } from "@/app/dashboard/page";
 import { ReduxProvider } from "@/store/provider";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -14,12 +14,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: // params,
+}: //   params,
 Readonly<{
   children: React.ReactNode;
-  // params: { pathname: string };
+  //   params: { pathname: string };
 }>) {
-  // const isDashboard = params.pathname.startsWith("/dashboard");
+  //   const isDashboard = params.pathname.startsWith("/dashboard");
   return (
     <html lang="en" className="dark">
       <body className={inter.className}>
@@ -27,7 +27,7 @@ Readonly<{
           <div>
             <Toaster />
           </div>
-          <Sidebard>{children}</Sidebard>
+          <MyDash>{children}</MyDash>
         </ReduxProvider>
       </body>
     </html>

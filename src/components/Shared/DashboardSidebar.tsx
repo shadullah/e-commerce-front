@@ -6,14 +6,16 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { GiPillDrop } from "react-icons/gi";
 import { IoCartOutline } from "react-icons/io5";
-import { FaRegUser, FaUserAlt } from "react-icons/fa";
-import { MdOutlineSpaceDashboard } from "react-icons/md";
+import { FaRegSquarePlus } from "react-icons/fa6";
+import { FaRegUser } from "react-icons/fa";
+import { MdHistory, MdOutlineSpaceDashboard } from "react-icons/md";
 import toast from "react-hot-toast";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import useUsers from "@/hooks/useUsers";
-import { RiShoppingBagLine } from "react-icons/ri";
 import { jwtDecode } from "jwt-decode";
+import { GrOverview } from "react-icons/gr";
+import { IoMdInformationCircleOutline } from "react-icons/io";
 
 const myLoader = ({ src }: { src: string }) => {
   return src;
@@ -30,61 +32,68 @@ export function DashboardSidebar({ children }: { children: React.ReactNode }) {
   const [isLoggedIn, setIsLoggedin] = useState(false);
   const users = useUsers();
 
-  const checkLoginStatus = () => {
-    const access = localStorage.getItem("accessToken");
-    if (access) {
-      const decodedToken: any = jwtDecode(access);
-      const currentTime = Date.now() / 1000;
+  // const checkLoginStatus = () => {
+  //   const access = localStorage.getItem("accessToken");
+  //   if (access) {
+  //     const decodedToken: any = jwtDecode(access);
+  //     const currentTime = Date.now() / 1000;
 
-      if (decodedToken.exp && decodedToken.exp < currentTime) {
-        handleLogout();
-      } else {
-        setIsLoggedin(true);
-      }
-    }
-  };
+  //     if (decodedToken.exp && decodedToken.exp < currentTime) {
+  //       handleLogout();
+  //     } else {
+  //       setIsLoggedin(true);
+  //     }
+  //   }
+  // };
 
-  useEffect(() => {
-    checkLoginStatus();
-  }, [pathname]);
-  const handleLogout = () => {
-    // setLoading(true);
-    try {
-      localStorage.removeItem("id");
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
+  // useEffect(() => {
+  //   checkLoginStatus();
+  // }, [pathname]);
+  // const handleLogout = () => {
+  //   // setLoading(true);
+  //   try {
+  //     localStorage.removeItem("id");
+  //     localStorage.removeItem("accessToken");
+  //     localStorage.removeItem("refreshToken");
 
-      setIsLoggedin(false);
+  //     setIsLoggedin(false);
 
-      router.push("/login");
-    } catch (error) {
-      console.log(error);
-      toast.error("logout failed", { duration: 3000 });
-    } finally {
-      // setLoading(false);
-    }
-  };
+  //     router.push("/login");
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error("logout failed", { duration: 3000 });
+  //   } finally {
+  //     // setLoading(false);
+  //   }
+  // };
 
   const links = [
     {
-      label: "Dash board",
-      href: "/",
+      label: "Dashboard",
+      href: "/dashboard",
       icon: (
-        <IconHome className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <MdOutlineSpaceDashboard className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
-      label: "Products",
-      href: "/products",
+      label: "Add Products",
+      href: "/add",
       icon: (
-        <RiShoppingBagLine className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <FaRegSquarePlus className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
-      label: "Cart",
+      label: "Payment history",
       href: "/cart",
       icon: (
-        <IoCartOutline className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <MdHistory className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
+    },
+    {
+      label: "Order overview",
+      href: "/cart",
+      icon: (
+        <GrOverview className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
   ];
@@ -101,80 +110,57 @@ export function DashboardSidebar({ children }: { children: React.ReactNode }) {
               {links.map((link, index) => (
                 <SidebarLink key={index} link={link} />
               ))}
-              {isLoggedIn ? (
-                <>
-                  <Link
-                    href="/dashboard"
-                    className="flex items-center gap-2 mt-3 cursor-pointer"
-                  >
-                    <MdOutlineSpaceDashboard className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-                    <span className="text-neutral-700 dark:text-neutral-200 text-sm">
-                      Dashboard
-                    </span>
-                  </Link>
-                </>
-              ) : null}
-
-              <div
-                onClick={
-                  isLoggedIn ? handleLogout : () => router.push("/login")
-                }
-                className="flex items-center gap-2 mt-3 cursor-pointer"
-              >
-                <FaRegUser className="text-neutral-700 dark:text-neutral-200 h-4 w-5 flex-shrink-0" />
-                <span className="text-neutral-700 text-sm dark:text-neutral-200">
-                  {isLoggedIn ? "Logout" : "Login"}
-                </span>
-              </div>
+              {/* {isLoggedIn ? ( */}
+              <>
+                <Link
+                  href="/dashboard"
+                  className="flex items-center gap-2 mt-3 cursor-pointer"
+                >
+                  <IoMdInformationCircleOutline className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+                  <span className="text-neutral-700 dark:text-neutral-200 text-sm">
+                    User Information
+                  </span>
+                </Link>
+              </>
+              {/* ) : null} */}
             </div>
           </div>
-          <div className="mt-4 flex text-center gap-2 px-4 py-2 border-t">
-            {isLoggedIn ? (
-              <>
-                <SidebarLink
-                  link={{
-                    label: users?.fullname,
-                    href: "/dashboard",
-                    icon: (
-                      <Image
-                        loader={myLoader}
-                        src={
-                          users?.photo ||
-                          "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                        }
-                        className="h-7 w-7 rounded-full"
-                        width={50}
-                        height={50}
-                        alt="Avatar"
-                        unoptimized
-                      />
-                    ),
-                  }}
-                />
-              </>
-            ) : (
-              <>
-                <SidebarLink
-                  link={{
-                    label: "Guest",
-                    href: "/",
-                    icon: (
-                      <Image
-                        loader={myLoader}
-                        src={
-                          "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                        }
-                        className="h-7 w-7 rounded-full"
-                        width={50}
-                        height={50}
-                        alt="Avatar"
-                        unoptimized
-                      />
-                    ),
-                  }}
-                />
-              </>
-            )}
+          <div className="mt-5 text-center gap-4 space-y-4 px-2 py-1 border-t">
+            {/* {isLoggedIn ? ( */}
+            <>
+              <SidebarLink
+                link={{
+                  label: "Home",
+                  href: "/",
+                  icon: (
+                    <IconHome className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+                  ),
+                }}
+              />
+              <SidebarLink
+                link={{
+                  label: users?.fullname,
+                  href: "/dashboard",
+                  icon: (
+                    <Image
+                      loader={myLoader}
+                      src={
+                        users?.photo ||
+                        "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                      }
+                      className="h-7 w-7 rounded-full"
+                      width={50}
+                      height={50}
+                      alt="Avatar"
+                      unoptimized
+                    />
+                  ),
+                }}
+              />
+            </>
+            {/* ) : ( */}
+            <></>
+            {/* )} */}
           </div>
           {open && <p className="mt-4 text-sm">&copy; Copyright reserved</p>}
         </SidebarBody>

@@ -1,35 +1,16 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "../globals.css";
-import { Toaster } from "react-hot-toast";
-import { MyDash } from "@/app/dashboard/page";
-import { ReduxProvider } from "@/store/provider";
+import { DashboardSidebar } from "@/components/Shared/DashboardSidebar";
+import { ReactNode } from "react";
 
-const inter = Inter({ subsets: ["latin"] });
+interface DashboardLayoutProps {
+  children: ReactNode;
+}
 
-export const metadata: Metadata = {
-  title: "Lazz Pharma",
-  description: "A pharmacautical site",
+const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+  return (
+    <div>
+      <DashboardSidebar>{children}</DashboardSidebar>
+    </div>
+  );
 };
 
-export default function RootLayout({
-  children,
-}: //   params,
-Readonly<{
-  children: React.ReactNode;
-  //   params: { pathname: string };
-}>) {
-  //   const isDashboard = params.pathname.startsWith("/dashboard");
-  return (
-    <html lang="en" className="dark">
-      <body className={inter.className}>
-        <ReduxProvider>
-          <div>
-            <Toaster />
-          </div>
-          <MyDash>{children}</MyDash>
-        </ReduxProvider>
-      </body>
-    </html>
-  );
-}
+export default DashboardLayout;

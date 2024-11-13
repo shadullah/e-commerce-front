@@ -25,7 +25,7 @@ const useUsers = (): any => {
       try {
         const token = localStorage.getItem("accessToken");
 
-        const res = await axios.get(`/api/v1/users/${getIdLocal()}`, {
+        const res = await axios.get(`/api/v1/users/all`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -40,7 +40,7 @@ const useUsers = (): any => {
     };
     getUserInfo();
   }, []);
-  return users;
+  return [users];
 };
 
 export default useUsers;

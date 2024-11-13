@@ -5,7 +5,7 @@ import CountUp from "react-countup";
 
 const Dashboard = () => {
   const [users] = useUsers();
-  console.log(users);
+  //   console.log(users);
 
   //   const ttlUser = users?.map((user) => user.length);
   return (
@@ -22,7 +22,7 @@ const Dashboard = () => {
           </p>
         </div>
         <div className="bg-indigo-400 p-2 md:p-4 rounded-md cursor-pointer">
-          <h4 className="text-xs md:text-xl mb-3">Completed</h4>
+          <h4 className="text-xs md:text-xl mb-3">Total Products</h4>
           <p>
             <span className="text-sm md:text-4xl">
               {/* <CountUp start={0} end={completedtask} duration={5} />{" "} */}
@@ -31,7 +31,7 @@ const Dashboard = () => {
           </p>
         </div>
         <div className="bg-cyan-400 p-2 md:p-4 rounded-md">
-          <h4 className="text-xs md:text-xl md:mb-3">In Progress</h4>
+          <h4 className="text-xs md:text-xl md:mb-3">Categories</h4>
           <p>
             <span className="text-sm md:text-4xl">
               {/* <CountUp start={0} end={inProgress} duration={5} />{" "} */}

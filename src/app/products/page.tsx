@@ -76,7 +76,7 @@ const FeaturedProducts = () => {
 
       {homepage ? (
         <>
-          <div className="md:flex justify-between items-center px-3 md:px-24">
+          <div className="md:flex justify-between items-center px-3 md:px-16">
             <div className="">
               <h2 className="text-base text-violet-400 font-semibold tracking-wide uppercase">
                 Featured Products

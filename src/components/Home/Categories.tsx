@@ -34,8 +34,8 @@ const Categories = () => {
 
   return (
     <div>
-      <div className="my-3 md:my-8">
-        {/* <h1 className=" text-3xl font-bold text-center">Category</h1> */}
+      <div className="my-3 md:my-8 px-2 md:px-12">
+        <h1 className="text-xl md:text-2xl font-bold">Category</h1>
         {load ? (
           <>
             <p className="text-center text-lg font-bold my-12">Loading...</p>
@@ -46,7 +46,7 @@ const Categories = () => {
               {cates.map((cat, index) => (
                 <div key={cat?.id || index}>
                   <div className="bg-pink-100 text-gray-800 block md:flex items-center justify-between p-2 md:p-6 rounded-lg">
-                    <h3 className="text-sm md:text-2xl font-bold">
+                    <h3 className="text-xs md:text-2xl font-bold">
                       {cat.name}
                     </h3>
                     <div>

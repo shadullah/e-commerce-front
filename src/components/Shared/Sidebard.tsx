@@ -14,6 +14,7 @@ import Image from "next/image";
 import useUsers from "@/hooks/useUsers";
 import { RiShoppingBagLine } from "react-icons/ri";
 import { jwtDecode } from "jwt-decode";
+import { BiLogOut } from "react-icons/bi";
 
 const myLoader = ({ src }: { src: string }) => {
   return src;
@@ -121,7 +122,16 @@ export function Sidebard({ children }: { children: React.ReactNode }) {
                 }
                 className="flex items-center gap-2 mt-3 cursor-pointer"
               >
-                <FaRegUser className="text-neutral-700 dark:text-neutral-200 h-4 w-5 flex-shrink-0" />
+                {isLoggedIn ? (
+                  <>
+                    <BiLogOut className="text-neutral-700 dark:text-neutral-200 h-4 w-5 flex-shrink-0" />
+                  </>
+                ) : (
+                  <>
+                    <FaRegUser className="text-neutral-700 dark:text-neutral-200 h-4 w-5 flex-shrink-0" />
+                  </>
+                )}
+
                 <span className="text-neutral-700 text-sm dark:text-neutral-200">
                   {isLoggedIn ? "Logout" : "Login"}
                 </span>

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
 import { login } from "@/store/Reducers/authSlice";
+import toast from "react-hot-toast";
 // import { useRouter } from "next/";
 
 const Login = () => {
@@ -55,14 +56,24 @@ const Login = () => {
 
       router.push("/");
     } catch (error: any) {
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        setError(error.response.data.message);
+      // if (
+      //   error.response &&
+      //   error.response.data &&
+      //   error.response.data.message
+      // ) {
+      //   setError(error.response.data.message);
+      // } else {
+      //   setError("An Error occurred during Login. Please try again");
+      // }
+      if (error.response) {
+        console.log(error.response);
+        const backendMessage =
+          error.response.data?.message || "An unexpected error occurred.";
+        // toast.error(error.)
+        setError(backendMessage); // Display backend error message
       } else {
-        setError("An Error occurred during Login. Please try again");
+        // Handle network errors or unexpected issues
+        setError("Failed to connect to the server. Please try again.");
       }
     }
   };

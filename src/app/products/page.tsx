@@ -34,13 +34,19 @@ const FeaturedProducts = () => {
   const [searchQ, setSearchQ] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [stockState, setStockState] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const url = searchQ
-          ? `/api/v1/products?search=${searchQ}`
-          : `/api/v1/products?page=${currentPage}`;
+        let url = `/api/v1/products?page=${currentPage}`;
+
+        if (searchQ) {
+          url = `/api/v1/products?search=${searchQ}`;
+        } else if (stockState !== undefined) {
+          url = `/api/v1/products?stock=${stockState}`;
+        }
+        console.log(url);
         const res = await axios.get<ApiResponse>(url);
         console.log(res?.data.data);
         const fetchedProducts = res.data.data.products || [];
@@ -54,7 +60,7 @@ const FeaturedProducts = () => {
       }
     };
     fetchProducts();
-  }, [searchQ, currentPage]);
+  }, [searchQ, currentPage, stockState]);
 
   const truncate = (str: string, len: number) => {
     if (str.length <= len) return str;
@@ -66,6 +72,31 @@ const FeaturedProducts = () => {
     setCurrentPage(1);
     setLoading(true);
   };
+
+  // useEffect(() => {
+  //   const fetchStocks = async () => {
+  //     try {
+  //       let url =
+  //         stockState !== undefined
+  //           ? `/api/v1/products?stock=${stockState}`
+  //           : "";
+  //       const res = await axios.get<ApiResponse>(url);
+  //       console.log(res?.data.data);
+  //       const fetchedProducts = res.data.data.products || [];
+  //       setProducts(fetchedProducts);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchStocks();
+  // }, [stockState]);
+
+  const stocksCases = (value: boolean | undefined) => {
+    console.log("my value is ", value);
+    setStockState(value);
+    setCurrentPage(1);
+  };
+
   const pathname = usePathname();
 
   const homepage = pathname === "/";
@@ -133,10 +164,24 @@ const FeaturedProducts = () => {
               </div>
               <div className="flex space-x-3">
                 <div>
-                  In Stock <input type="checkbox" />
+                  In Stock
+                  <input
+                    checked={stockState === true}
+                    onChange={(e) =>
+                      stocksCases(e.target.checked ? true : undefined)
+                    }
+                    type="checkbox"
+                  />
                 </div>
                 <div>
-                  Stock out <input type="checkbox" />
+                  Stock out{" "}
+                  <input
+                    checked={stockState === false}
+                    onChange={(e) =>
+                      stocksCases(e.target.checked ? false : undefined)
+                    }
+                    type="checkbox"
+                  />
                 </div>
               </div>
             </div>

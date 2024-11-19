@@ -80,12 +80,14 @@ const FeaturedProducts = () => {
   };
 
   const stocksCases = (value: boolean | undefined) => {
-    setStockState(value);
-    setCurrentPage(1);
+    if (stockState !== value) {
+      setStockState(value);
+      setCurrentPage(1);
+    }
   };
 
   const handleSortToggle = () => {
-    setSorted((prev) => (prev === undefined ? true : !prev));
+    setSorted((prev) => (prev === undefined ? true : prev ? false : undefined));
     setCurrentPage(1);
   };
 

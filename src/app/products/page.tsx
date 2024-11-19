@@ -35,6 +35,7 @@ const FeaturedProducts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [stockState, setStockState] = useState<boolean | undefined>(undefined);
+  const [sorted, setSorted] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -42,10 +43,15 @@ const FeaturedProducts = () => {
         let url = `/api/v1/products?page=${currentPage}`;
 
         if (searchQ) {
-          url = `/api/v1/products?search=${searchQ}`;
-        } else if (stockState !== undefined) {
-          url = `/api/v1/products?stock=${stockState}`;
+          url += `&search=${searchQ}`;
         }
+        if (stockState !== undefined) {
+          url += `&stock=${stockState}`;
+        }
+        if (sorted !== undefined) {
+          url += `&sort=${sorted}`;
+        }
+
         console.log(url);
         const res = await axios.get<ApiResponse>(url);
         console.log(res?.data.data);
@@ -60,7 +66,7 @@ const FeaturedProducts = () => {
       }
     };
     fetchProducts();
-  }, [searchQ, currentPage, stockState]);
+  }, [searchQ, currentPage, stockState, sorted]);
 
   const truncate = (str: string, len: number) => {
     if (str.length <= len) return str;
@@ -73,27 +79,13 @@ const FeaturedProducts = () => {
     setLoading(true);
   };
 
-  // useEffect(() => {
-  //   const fetchStocks = async () => {
-  //     try {
-  //       let url =
-  //         stockState !== undefined
-  //           ? `/api/v1/products?stock=${stockState}`
-  //           : "";
-  //       const res = await axios.get<ApiResponse>(url);
-  //       console.log(res?.data.data);
-  //       const fetchedProducts = res.data.data.products || [];
-  //       setProducts(fetchedProducts);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchStocks();
-  // }, [stockState]);
-
   const stocksCases = (value: boolean | undefined) => {
-    console.log("my value is ", value);
     setStockState(value);
+    setCurrentPage(1);
+  };
+
+  const handleSortToggle = () => {
+    setSorted((prev) => (prev === undefined ? true : !prev));
     setCurrentPage(1);
   };
 
@@ -158,13 +150,16 @@ const FeaturedProducts = () => {
             <div className="block md:flex md:space-x-4 space-y-2 items-center px-4 md:px-16">
               <h1 className="text-xl">Filters: </h1>
               <div>
-                <button className="px-3 py-2 bg-slate-500 rounded-lg">
-                  Price <span>&uarr;</span>
+                <button
+                  onClick={handleSortToggle}
+                  className="px-3 py-2 bg-slate-500 rounded-lg"
+                >
+                  Price {sorted ? <span>&uarr;</span> : <span>&darr;</span>}
                 </button>
               </div>
               <div className="flex space-x-3">
                 <div>
-                  In Stock
+                  In Stock{" "}
                   <input
                     checked={stockState === true}
                     onChange={(e) =>

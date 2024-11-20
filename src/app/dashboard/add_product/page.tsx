@@ -44,13 +44,49 @@ const Add_products = () => {
     getCategory();
   }, []);
 
+  const handleAdd = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // const form = e.target as HTMLFormElement;
+    // const title = form.title.value;
+    // const description = form.des.value;
+    // const price = form.price.value;
+    // const discount = form.discount.value;
+    // const catSelected = form.category.value;
+    // console.log(catSelected);
+
+    const formData = new FormData(e.currentTarget);
+    // const data = ;
+
+    // const category = categories.find((cat) => cat._id === catSelected);
+
+    const fileInput = e.currentTarget.querySelector(
+      'input[type="file"'
+    ) as HTMLInputElement;
+
+    if (fileInput?.files?.[0]) {
+      const file = fileInput.files[0];
+      formData.append("image", file);
+    }
+
+    console.log(Object.fromEntries(formData.entries()));
+
+    try {
+      await axios.post(`http://localhost:8000/api/v1/products/all/`, formData, {
+        headers: {
+          Authorization: `Token ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      toast.success("PRoduct added successfully", { duration: 3000 });
+    } catch (err) {
+      console.log(err);
+      toast.error("Addition of product failed", { duration: 3000 });
+    }
+  };
+
   return (
     <div>
       <h1 className="text-3xl font-bold">Add Products</h1>
-      <form
-        //   onSubmit={handleUpdate}
-        className="py-6 md:py-16"
-      >
+      <form onSubmit={handleAdd} className="py-6 md:py-16">
         <div className="block md:flex">
           <div className="w-1/2 px-3 mb-6">
             {imgPrev && (
@@ -65,7 +101,6 @@ const Add_products = () => {
               </div>
             )}
             <input
-              // onChange={(e) => setUrl(e.target.value)}
               className="appearance-none border-b-4 outline-none  border-gray-700 w-full py-2 px-3 text-center"
               type="file"
               required
@@ -76,43 +111,34 @@ const Add_products = () => {
           <div className="w-1/2">
             <div className="w-full px-3 mb-6">
               <input
-                // onChange={(e) => setTitle(e.target.value)}
                 className="appearance-none border-b-4 outline-none  border-gray-700 w-full py-2 px-3 bg-orange-300/10"
                 name="title"
                 placeholder="Product Title"
                 type="text"
-                // value={title}
                 required
               />
             </div>
 
             <div className="w-full px-3 mb-6">
               <textarea
-                // onChange={(e) => setDes(e.target.value)}
                 className="appearance-none border-b-4 outline-none  border-gray-700 w-full py-2 px-3 bg-orange-300/10"
                 name="des"
-                // type="text"
-                // value={des}
                 placeholder="Write Product description here..."
                 required
               />
             </div>
             <div className="w-full flex justify-between space-x-2 px-3 mb-6">
               <input
-                // onChange={(e) => setCondition(e.target.value)}
                 className="appearance-none border-b-4 outline-none  border-gray-700 w-full py-2 px-3 bg-orange-300/10"
                 name="price"
                 type="number"
-                // value={condition}
                 placeholder="20"
                 required
               />
               <input
-                // onChange={(e) => setCondition(e.target.value)}
                 className="appearance-none border-b-4 outline-none  border-gray-700 w-full py-2 px-3 bg-orange-300/10"
                 name="discount"
                 type="number"
-                // value={condition}
                 placeholder="discount percentage e.g 2"
                 required
               />
@@ -124,33 +150,16 @@ const Add_products = () => {
                 name="category"
                 id="category"
                 defaultValue=""
-                // value={selectedCategory}
-                // onChange={(e) => setSelectedCategory(e.target.value)}
               >
                 <option className="text-base" value="" disabled>
                   Select Category here
                 </option>
 
-                {/* {categories.map((prio) => console.log(prio.id))} */}
                 {categories?.map((cat) => (
-                  <option key={cat?._id} value={cat?.slug}>
+                  <option key={cat?._id} value={cat?._id}>
                     {cat?.name}
                   </option>
                 ))}
-              </select>
-            </div>
-            <div className="w-full px-3 mb-6">
-              <select
-                className="appearance-none border-b-4 outline-none border-gray-700 w-full py-2 px-3 bg-gray-600"
-                name="stock"
-                required
-                defaultValue=""
-                // onChange={(e) => setStock(e.target.value === "true")}
-              >
-                <option value="" disabled>
-                  Select Stock Status
-                </option>
-                <option value="true">True</option>
               </select>
             </div>
           </div>

@@ -1,6 +1,7 @@
 "use client";
 import axios from "axios";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const myLoader = ({ src }: { src: string }) => {
@@ -8,7 +9,7 @@ const myLoader = ({ src }: { src: string }) => {
 };
 
 type Category = {
-  id: string;
+  _id: string;
   name: string;
   thumbnail: string;
 };
@@ -44,23 +45,25 @@ const Categories = () => {
           <>
             <div className="grid grid-cols-3 gap-2 md:gap-12 mx-auto mt-3 p-1 md:p-6">
               {cates.map((cat, index) => (
-                <div key={cat?.id || index}>
-                  <div className="bg-pink-100 text-gray-800 block md:flex items-center justify-between p-2 md:p-6 rounded-lg">
-                    <h3 className="text-xs md:text-2xl font-bold">
-                      {cat.name}
-                    </h3>
-                    <div>
-                      <Image
-                        loader={myLoader}
-                        src={cat?.thumbnail}
-                        alt="category"
-                        height={300}
-                        width={300}
-                        unoptimized
-                        className="h-5 md:h-12 w-5 md:w-12 mx-auto rounded-md"
-                      />
+                <div key={cat?._id || index}>
+                  <Link href={`/categories/${cat?._id}`}>
+                    <div className="bg-pink-100 text-gray-800 block md:flex items-center justify-between p-2 md:p-6 rounded-lg">
+                      <h3 className="text-xs md:text-2xl font-bold">
+                        {cat.name}
+                      </h3>
+                      <div>
+                        <Image
+                          loader={myLoader}
+                          src={cat?.thumbnail}
+                          alt="category"
+                          height={300}
+                          width={300}
+                          unoptimized
+                          className="h-5 md:h-12 w-5 md:w-12 mx-auto rounded-md"
+                        />
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               ))}
             </div>

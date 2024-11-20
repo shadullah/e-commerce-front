@@ -86,8 +86,8 @@ const Add_products = () => {
   return (
     <div>
       <h1 className="text-3xl font-bold">Add Products</h1>
-      <form onSubmit={handleAdd} className="py-6 md:py-16">
-        <div className="block md:flex">
+      <form onSubmit={handleAdd} className="px-3 md:px-6 py-6 md:py-16">
+        <div className="block md:flex items-center">
           <div className="w-1/2 px-3 mb-6">
             {imgPrev && (
               <div>

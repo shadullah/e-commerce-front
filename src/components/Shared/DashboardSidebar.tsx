@@ -77,7 +77,7 @@ export function DashboardSidebar({ children }: { children: React.ReactNode }) {
     },
     {
       label: "Add Products",
-      href: "/add",
+      href: "/dashboard/add_product",
       icon: (
         <FaRegSquarePlus className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),

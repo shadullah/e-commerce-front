@@ -18,6 +18,18 @@ interface Category {
 const Add_products = () => {
   const [imgPrev, setImgPrev] = useState<string | null>("");
   const [categories, setCategories] = useState<Category[]>([]);
+  const [user, setUser] = useState();
+  // const userId= localStorage.getItem("id")
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await axios.get(
+        `/api/v1/users/${localStorage.getItem("id")}`
+      );
+      setUser(res.data?.data?._id);
+      console.log(res.data);
+    };
+    fetchUser();
+  }, []);
 
   const handleImgPrev = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -44,39 +56,27 @@ const Add_products = () => {
     getCategory();
   }, []);
 
+  //   product add function here
   const handleAdd = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // const form = e.target as HTMLFormElement;
-    // const title = form.title.value;
-    // const description = form.des.value;
-    // const price = form.price.value;
-    // const discount = form.discount.value;
-    // const catSelected = form.category.value;
-    // console.log(catSelected);
 
     const formData = new FormData(e.currentTarget);
-    // const data = ;
 
-    // const category = categories.find((cat) => cat._id === catSelected);
-
-    const fileInput = e.currentTarget.querySelector(
-      'input[type="file"'
-    ) as HTMLInputElement;
-
-    if (fileInput?.files?.[0]) {
-      const file = fileInput.files[0];
-      formData.append("image", file);
+    if (user) {
+      formData.append("owner", user);
     }
 
-    console.log(Object.fromEntries(formData.entries()));
-
     try {
-      await axios.post(`http://localhost:8000/api/v1/products/all/`, formData, {
+      const response = await axios.post(`/api/v1/products/add`, formData, {
         headers: {
-          Authorization: `Token ${localStorage.getItem("accessToken")}`,
+          "Content-Type": "multipart/form-data",
         },
       });
-      toast.success("PRoduct added successfully", { duration: 3000 });
+      if (response.status === 200) {
+        toast.success("PRoduct added successfully", { duration: 3000 });
+        setImgPrev("");
+        (e.target as HTMLFormElement).reset();
+      }
     } catch (err) {
       console.log(err);
       toast.error("Addition of product failed", { duration: 3000 });
@@ -104,6 +104,7 @@ const Add_products = () => {
               className="appearance-none border-b-4 outline-none  border-gray-700 w-full py-2 px-3 text-center"
               type="file"
               required
+              name="productImage"
               accept="image/*"
               onChange={handleImgPrev}
             />
@@ -112,8 +113,8 @@ const Add_products = () => {
             <div className="w-full px-3 mb-6">
               <input
                 className="appearance-none border-b-4 outline-none  border-gray-700 w-full py-2 px-3 bg-orange-300/10"
-                name="title"
-                placeholder="Product Title"
+                name="name"
+                placeholder="Product Name"
                 type="text"
                 required
               />
@@ -122,7 +123,7 @@ const Add_products = () => {
             <div className="w-full px-3 mb-6">
               <textarea
                 className="appearance-none border-b-4 outline-none  border-gray-700 w-full py-2 px-3 bg-orange-300/10"
-                name="des"
+                name="description"
                 placeholder="Write Product description here..."
                 required
               />

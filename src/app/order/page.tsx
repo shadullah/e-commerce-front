@@ -34,16 +34,15 @@ const OrderPage = () => {
   const [carts, setCarts] = useState<CartProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [cartId, setCartId] = useState("");
-  const router = useRouter();
+  const [user, setUser] = useState();
   const search = useSearchParams();
-  const myId = localStorage.getItem("id");
 
-  const ttl = search.get("ttl") || "0";
+  const token = localStorage.getItem("accessToken");
 
+  // cart fetch here
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const token = localStorage.getItem("accessToken");
         if (!token) {
           toast.error("Login to get you cartItems");
           return;
@@ -82,37 +81,94 @@ const OrderPage = () => {
       0
     );
   }, [carts]);
+  console.log(Subtotal);
 
-  // const ttl = Subtotal;
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await axios.get(
+        `/api/v1/users/${localStorage.getItem("id")}`
+      );
+      setUser(res.data?.data?._id);
+      console.log(res.data);
+    };
+    fetchUser();
+  }, []);
 
-  // useEffect(() => {
-  //   if (!ttl) {
-  //     router.push("");
-  //   }
-  // }, [ttl, router]);
+  const handleOrderAndPayment = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("clicked");
 
-  const handlePayment = () => {
-    const numeric = parseFloat(ttl);
+    const formData = new FormData(e.currentTarget);
+    const orderDetails = {
+      customer: user,
+      orderPrice: parseFloat(Subtotal.toString()),
+      status: "PENDING",
+      orderItems: cartId,
+      address: formData.get("address"),
+      city: formData.get("city"),
+      district: formData.get("district"),
+      phone: parseInt(formData.get("phone") as string),
+      zip: parseInt(formData.get("zip") as string),
+    };
+    console.log(orderDetails);
+    try {
+      const orderResponse = await axios.post(
+        `/api/v1/orders/create`,
+        orderDetails,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    if (isNaN(numeric)) {
-      console.error("invalid amount value");
-      return;
-    }
+      toast.success("order success");
+      console.log(orderResponse);
+      const data = orderResponse?.data?.data;
+      const orderId = data._id;
+      if (orderId) {
+        const paymentResponse = await axios.post(
+          "/api/v1/payments/create-payment",
+          {
+            customer: data.customer,
+            orderId,
+            orderPrice: data.orderPrice,
+          }
+        );
 
-    axios
-      .post("/api/v1/create-payment", {
-        customer: myId,
-        amount: numeric,
-        currency: "BDT",
-      })
-      .then((res) => {
-        console.log(res);
-        const redirectUrl = res.data.paymentUrl;
+        console.log(paymentResponse);
+
+        const redirectUrl = paymentResponse.data.paymentUrl;
 
         if (redirectUrl) {
           window.location.replace(redirectUrl);
         }
-      });
+      }
+    } catch (error) {
+      console.log("Error creating order or Payment", error);
+    }
+
+    // const numeric = parseFloat(ttl);
+
+    // if (isNaN(numeric)) {
+    //   console.error("invalid amount value");
+    //   return;
+    // }
+
+    // axios
+    //   .post("/api/v1/payments/create-payment", {
+    //     customer: myId,
+    //     orderPrice: numeric,
+    //     currency: "BDT",
+    //   })
+    //   .then((res) => {
+    //     console.log(res);
+    //     const redirectUrl = res.data.paymentUrl;
+
+    //     if (redirectUrl) {
+    //       window.location.replace(redirectUrl);
+    //     }
+    //   });
   };
 
   return (
@@ -120,119 +176,121 @@ const OrderPage = () => {
       <h1 className="text-3xl md:text-5xl font-bold  my-12 text-center">
         Order page
       </h1>
-      <div className="block md:flex justify-between my-6">
-        <div className="w-full m-0 md:m-6">
-          <h1 className="text-xl md:text-2xl font-medium my-6">
-            Billing Details
-          </h1>
-          <div className="m-2 md:m-12">
-            <LabelInputContainer className="mb-4">
-              <Label htmlFor="street">Street Address *</Label>
-              <Input
-                id="street"
-                placeholder="Road no. 00, house no. 10"
-                type="text"
-                name="street_address"
-                required
-              />
-            </LabelInputContainer>
-            <LabelInputContainer className="mb-4">
-              <Label htmlFor="city">City *</Label>
-              <Input
-                id="sylhet"
-                placeholder="Sylhet"
-                type="text"
-                name="sylhet_city"
-                required
-              />
-            </LabelInputContainer>
-            <LabelInputContainer className="mb-4">
-              <Label htmlFor="division">Division *</Label>
-              <Input
-                id="division"
-                placeholder="Sylhet"
-                type="text"
-                name="division"
-                required
-              />
-            </LabelInputContainer>
-            <LabelInputContainer className="mb-4">
-              <Label htmlFor="phone">Phone * </Label>
-              <Input
-                id="phone"
-                placeholder="016******"
-                type="number"
-                name="phone"
-                required
-              />
-            </LabelInputContainer>
-            <LabelInputContainer className="mb-4">
-              <Label htmlFor="zip">Zip Code *</Label>
-              <Input
-                id="zip"
-                placeholder="3100"
-                type="text"
-                name="zip_code"
-                required
-              />
-            </LabelInputContainer>
+      <form onSubmit={handleOrderAndPayment}>
+        <div className="block md:flex justify-between my-6">
+          <div className="w-full m-0 md:m-6">
+            <h1 className="text-xl md:text-2xl font-medium my-6">
+              Billing Details
+            </h1>
+            <div className="m-2 md:m-12">
+              <LabelInputContainer className="mb-4">
+                <Label htmlFor="street">Street Address *</Label>
+                <Input
+                  id="street"
+                  placeholder="Road no. 00, house no. 10"
+                  type="text"
+                  name="address"
+                  required
+                />
+              </LabelInputContainer>
+              <LabelInputContainer className="mb-4">
+                <Label htmlFor="city">City *</Label>
+                <Input
+                  id="sylhet"
+                  placeholder="Sylhet"
+                  type="text"
+                  name="city"
+                  required
+                />
+              </LabelInputContainer>
+              <LabelInputContainer className="mb-4">
+                <Label htmlFor="division">District *</Label>
+                <Input
+                  id="district"
+                  placeholder="Sylhet"
+                  type="text"
+                  name="district"
+                  required
+                />
+              </LabelInputContainer>
+              <LabelInputContainer className="mb-4">
+                <Label htmlFor="phone">Phone * </Label>
+                <Input
+                  id="phone"
+                  placeholder="016******"
+                  type="number"
+                  name="phone"
+                  required
+                />
+              </LabelInputContainer>
+              <LabelInputContainer className="mb-4">
+                <Label htmlFor="zip">Zip Code *</Label>
+                <Input
+                  id="zip"
+                  placeholder="3100"
+                  type="text"
+                  name="zip"
+                  required
+                />
+              </LabelInputContainer>
+            </div>
           </div>
-        </div>
-        <div className="w-full md:w-1/3 m-2 md:m-6">
-          <h1 className="text-xl md:text-2xl font-medium my-6">Your Order</h1>
-          <div>
-            <h3 className="text-xl">Products</h3>
-            <div className="">
-              {carts?.length > 0 ? (
-                <>
-                  {carts.map((item) => (
-                    <div
-                      key={item?._id}
-                      className="grid grid-cols-3 justify-between items-center gap-6 p-3 m-3 rounded-md"
-                    >
-                      <div className="flex justify-center items-center">
-                        <Image
-                          loader={myLoader}
-                          className="w-12 rounded-md mr-2"
-                          src={item.productId.productImage}
-                          alt="#"
-                          height={1}
-                          width={1}
-                          unoptimized
-                        />
+          <div className="w-full md:w-1/3 m-2 md:m-6">
+            <h1 className="text-xl md:text-2xl font-medium my-6">Your Order</h1>
+            <div>
+              <h3 className="text-xl">Products</h3>
+              <div className="">
+                {carts?.length > 0 ? (
+                  <>
+                    {carts.map((item) => (
+                      <div
+                        key={item?._id}
+                        className="grid grid-cols-3 justify-between items-center gap-6 p-3 m-3 rounded-md"
+                      >
+                        <div className="flex justify-center items-center">
+                          <Image
+                            loader={myLoader}
+                            className="w-12 rounded-md mr-2"
+                            src={item.productId.productImage}
+                            alt="#"
+                            height={1}
+                            width={1}
+                            unoptimized
+                          />
+                        </div>
+                        <h5 className="text-gray-200 text-sm">
+                          {item.productId.name} x <span>{item.quantity}</span>
+                        </h5>
+
+                        <div className="text-sm">${item.productId.price}</div>
                       </div>
-                      <h5 className="text-gray-200 text-sm">
-                        {item.productId.name} x <span>{item.quantity}</span>
-                      </h5>
-
-                      <div className="text-sm">${item.productId.price}</div>
-                    </div>
-                  ))}
-                </>
-              ) : (
-                <>
-                  <p>Cart is empty now</p>
-                </>
-              )}
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    <p>Cart is empty now</p>
+                  </>
+                )}
+              </div>
             </div>
-          </div>
-          <div>
-            <div className="text-md md:text-lg font-bold ">
-              <p className="mr-2">Subtotal: ${Subtotal} </p>
+            <div>
+              <div className="text-md md:text-lg font-bold ">
+                <p className="mr-2">Subtotal: ${Subtotal} </p>
 
-              <p> </p>
+                <p> </p>
+              </div>
             </div>
-          </div>
-          <div className="flex justify-center mt-6 md:mt-12 ease-in-out">
-            <button
-              className="w-48 text-nowrap md:w-full px-3 py-2 bg-gray-700 hover:bg-green-500 rounded-lg transition duration-300 ease-in-out"
-              onClick={handlePayment}
-            >
-              Proceed to Pay &rarr;
-            </button>
+            <div className="flex justify-center mt-6 md:mt-12 ease-in-out">
+              <button
+                type="submit"
+                className="w-48 text-nowrap md:w-full px-3 py-2 bg-gray-700 hover:bg-green-500 rounded-lg transition duration-300 ease-in-out"
+              >
+                Proceed to Pay &rarr;
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

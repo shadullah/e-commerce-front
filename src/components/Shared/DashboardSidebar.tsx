@@ -91,7 +91,7 @@ export function DashboardSidebar({ children }: { children: React.ReactNode }) {
     },
     {
       label: "Order overview",
-      href: "/cart",
+      href: "/dashboard/overview_order",
       icon: (
         <GrOverview className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),

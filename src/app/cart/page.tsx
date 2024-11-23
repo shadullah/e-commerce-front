@@ -130,7 +130,7 @@ const Cart = () => {
           }
         );
       });
-      router.push(`/order`);
+      router.push(`/orders`);
       toast.success("Cart updated success");
     } catch (err) {
       console.log(err);

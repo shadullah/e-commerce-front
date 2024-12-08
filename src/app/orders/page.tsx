@@ -125,13 +125,14 @@ const OrderPage = () => {
       toast.success("order success");
       console.log(orderResponse);
       const data = orderResponse?.data?.data;
-      const orderId = data._id;
+      const orderId = data?._id;
+      console.log(orderId);
       if (orderId) {
         const paymentResponse = await axios.post(
           "/api/v1/payments/create-payment",
           {
             customer: data.customer,
-            orderId,
+            orderId: data._id,
             orderPrice: data.orderPrice,
           }
         );
@@ -147,28 +148,6 @@ const OrderPage = () => {
     } catch (error) {
       console.log("Error creating order or Payment", error);
     }
-
-    // const numeric = parseFloat(ttl);
-
-    // if (isNaN(numeric)) {
-    //   console.error("invalid amount value");
-    //   return;
-    // }
-
-    // axios
-    //   .post("/api/v1/payments/create-payment", {
-    //     customer: myId,
-    //     orderPrice: numeric,
-    //     currency: "BDT",
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //     const redirectUrl = res.data.paymentUrl;
-
-    //     if (redirectUrl) {
-    //       window.location.replace(redirectUrl);
-    //     }
-    //   });
   };
 
   return (

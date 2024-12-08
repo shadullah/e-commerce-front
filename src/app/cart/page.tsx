@@ -256,7 +256,7 @@ const Cart = () => {
               <p>${ttl.toFixed(2)}</p>
             </div>
           </div>
-          {isLoggedIn ? (
+          {isLoggedIn && carts.length > 0 ? (
             <>
               <div>
                 <button
